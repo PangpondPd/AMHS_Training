@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AMHS — Linux Commands Lab Workbook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#04182E; --panel:#13284C; --panel-2:#102246;
+  --teal:#1C7295; --teal-dk:#1391A9;
+  --green:#27AB8E; --green-line:#2E9E7A; --grn-bg:#0B2D1F; --grn-bd:#2C7A57; --grn-tx:#bfe7cf;
+  --amber:#EEAD39; --red:#C9695F;
+  --chip:#0D1E2D; --chip-bd:#234E64;
+  --term-bg:#0C1E2E; --term-bd:#17A8C3; --cmd:#79D0E6; --cmt:#5E89A0;
+  --ink:#EAF2F8; --body:#C5D4E1; --muted:#8295A6;
+  --shadow:0 5px 16px rgba(0,0,0,.30);
+  --emoji:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif;
+  --dash:repeating-linear-gradient(90deg, var(--teal) 0 26px, transparent 26px 44px);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{ background:#0c1a28; font-family:'Inter',system-ui,sans-serif; color:var(--ink); overflow:hidden; -webkit-font-smoothing:antialiased;}
+#stage{ position:fixed; inset:0 0 64px 60px; display:flex; align-items:center; justify-content:center; overflow:hidden;}
+#scaler{ position:relative; width:1000px; height:562.5px; transform-origin:center center;}
+.slide{ position:absolute; inset:0; width:1000px; height:562.5px; background:var(--navy); color:var(--body); opacity:0; visibility:hidden; transition:opacity .35s ease; overflow:hidden;}
+.slide.active{ opacity:1; visibility:visible; z-index:2;}
+@media (prefers-reduced-motion:reduce){ .slide{transition:none} }
+.emoji{ font-family:var(--emoji); font-style:normal; line-height:1;}
+.mono{ font-family:'DM Mono',monospace;}
+
+/* content-slide chrome */
+.lhead{ position:relative; padding:18px 38px 0;}
+.ltitle{ font-family:'Manrope',sans-serif; font-weight:800; color:#fff; font-size:30px; letter-spacing:-.01em;}
+.lsub{ font-style:italic; color:var(--teal); font-size:14.5px; margin-top:6px;}
+.badge{ position:absolute; top:22px; right:34px; min-width:160px; text-align:center; padding:11px 22px; border-radius:8px; background:var(--teal); color:#06283a; font-family:'Manrope',sans-serif; font-weight:800; font-size:13px; letter-spacing:.06em; box-shadow:var(--shadow);}
+.badge.green{ background:var(--green); color:#04241a;}
+.dash{ height:6px; margin:10px 0 0; background:var(--dash);}
+.lbody{ padding:12px 38px 0; height:calc(562.5px - 128px); overflow:hidden;}
+.lfoot{ position:absolute; left:38px; right:24px; bottom:13px; display:flex; justify-content:space-between; color:var(--muted); font-size:10.5px;}
+
+/* small pill */
+.epill{ display:inline-block; padding:5px 16px; border:1.5px solid var(--teal); border-radius:14px; color:var(--teal); font-family:'Manrope',sans-serif; font-weight:700; font-size:11px; letter-spacing:.05em; margin-bottom:8px;}
+.epill.green{ border-color:var(--green); color:var(--green);}
+.note-intro{ color:var(--body); font-size:13.5px; margin-bottom:12px;}
+
+/* exercise steps — inline (single col) */
+.steps{ display:flex; flex-direction:column; gap:10px;}
+.steps.two{ display:grid; grid-template-columns:1fr 1fr; gap:5px 28px;}
+.step{ display:grid; grid-template-columns:24px 1fr; gap:11px; align-items:start;}
+.snum{ flex:none; width:24px; height:24px; border-radius:50%; background:var(--teal); color:#06283a; font-family:'Manrope',sans-serif; font-weight:700; font-size:12px; display:flex; align-items:center; justify-content:center; margin-top:1px;}
+.snum.amber{ background:var(--amber); color:#3a2c06;}
+.sbody .ins{ color:var(--body); font-size:12px; line-height:1.22;}
+.sbody .cmd{ margin-top:3px; background:var(--chip); border:1px solid var(--chip-bd); border-radius:4px; padding:4px 11px; font-family:'DM Mono',monospace; font-size:11.5px; color:var(--cmd);}
+.sbody .cmd.amber{ color:var(--amber); border-color:#6a5520;}
+.sbody .cmd.plain{ color:var(--muted); font-style:italic; font-family:'Inter',sans-serif; background:transparent; border:none; padding:4px 0;}
+
+/* inline layout variant: instruction left, command right */
+.steps.inline{ gap:5px;}
+.steps.inline .step{ grid-template-columns:26px 1fr 320px; align-items:center;}
+.steps.inline .sbody{ display:contents;}
+.steps.inline .ins{ font-size:13.5px; line-height:1.3;}
+.steps.inline .cmd{ margin-top:0; padding:5px 12px; font-size:12.5px;}
+
+/* two-panel (ubuntu vs rhel) */
+.panels{ display:grid; grid-template-columns:1fr 1fr; gap:20px; height:100%;}
+.panel{ border:2px solid var(--teal); border-radius:10px; padding:14px 16px; overflow:hidden;}
+.panel.amber{ border-color:var(--amber);}
+.panel .ph{ font-family:'Manrope',sans-serif; font-weight:700; color:var(--teal); font-size:14px; margin-bottom:10px;}
+.panel.amber .ph{ color:var(--amber);}
+.panel .pstep{ display:flex; gap:10px; align-items:center; margin-bottom:6px;}
+.panel .pstep .snum{ width:22px; height:22px; font-size:11px;}
+.panel .pstep .pins{ font-size:11.5px; color:var(--body);}
+.panel .pcmd{ margin:0 0 9px 32px; background:var(--chip); border:1px solid var(--chip-bd); border-radius:4px; padding:5px 11px; font-family:'DM Mono',monospace; font-size:11.5px; color:var(--cmd);}
+.panel.amber .pcmd{ color:var(--amber); border-color:#6a5520;}
+
+/* terminal blocks */
+.term{ border:2px solid var(--term-bd); border-radius:8px; background:var(--term-bg); padding:14px 16px; height:100%; overflow:hidden;}
+.term .lbl{ color:var(--teal); font-family:'DM Mono',monospace; font-weight:700; font-size:11px; margin-bottom:8px;}
+.term pre{ font-family:'DM Mono',monospace; font-size:11.5px; line-height:1.5; color:#cfe0ea; white-space:pre-wrap;}
+.term .cmt{ color:var(--cmt);}
+.term .cmd{ color:var(--cmd);}
+/* green answer terminal */
+.term.green{ border-color:var(--grn-bd); background:var(--grn-bg);}
+.term.green .lbl{ color:var(--green);}
+.term.green pre{ color:var(--grn-tx);}
+.term.green .pr{ color:#5fd6a6;}
+
+/* answer layout: terminal(s) + side note */
+.ans2{ display:grid; grid-template-columns:1fr 1fr; gap:18px; height:100%;}
+.ans-note{ border:1.5px solid var(--green-line); border-radius:8px; padding:12px 14px; background:rgba(39,171,142,.06); align-self:start;}
+.ans-note .nh{ color:var(--green); font-family:'Manrope',sans-serif; font-weight:700; font-size:12px; margin-bottom:6px;}
+.ans-note p{ font-size:12px; color:var(--body); line-height:1.4;}
+.ans-note .ok{ color:#5fd6a6;} .ans-note .bad{ color:#ff8b7a;}
+
+/* ubuntu note box */
+.unote{ margin-top:9px; border:1px solid var(--amber); border-left:5px solid var(--amber); border-radius:5px; background:rgba(238,173,57,.07); padding:10px 16px;}
+.unote .uh{ color:var(--amber); font-family:'Manrope',sans-serif; font-weight:700; font-size:11.5px; letter-spacing:.04em; margin-bottom:4px;}
+.unote p{ font-size:12px; color:var(--body); line-height:1.35;}
+.unote.red{ border-color:var(--red); border-left-color:var(--red); background:rgba(201,105,95,.08);}
+.unote.red .uh{ color:#e88a7e;}
+.unote .mono{ color:var(--cmd);}
+
+/* permission helper bar */
+.permbar{ background:var(--panel); border-radius:6px; padding:10px 14px; margin-bottom:11px; font-size:12.5px; color:var(--body);}
+.permbar .mono{ color:var(--cmd); font-weight:600;}
+
+/* title slide */
+.slide.cover{ background:var(--navy);}
+.cover .eyebrow{ position:absolute; left:84px; top:135px; color:var(--teal); font-family:'Manrope',sans-serif; font-weight:700; font-size:18px; letter-spacing:.34em;}
+.cover h1{ position:absolute; left:80px; top:165px; font-family:'Manrope',sans-serif; font-weight:800; color:#fff; font-size:74px; line-height:1.05;}
+.cover .ci{ position:absolute; left:84px; top:368px; font-style:italic; color:#cdd9e4; font-size:18px;}
+.cover .cul{ position:absolute; left:84px; top:408px; width:760px; height:3px; background:var(--teal);}
+.cover .csub{ position:absolute; left:84px; top:426px; color:var(--muted); font-size:14px;}
+.cover .checker{ position:absolute; top:30px; right:150px; width:160px; height:160px;
+  background-image:
+    linear-gradient(45deg,#091833 25%,transparent 25%,transparent 75%,#091833 75%),
+    linear-gradient(45deg,#091833 25%,transparent 25%,transparent 75%,#091833 75%);
+  background-size:40px 40px; background-position:0 0,20px 20px;}
+.cover .botdash{ position:absolute; left:0; right:0; bottom:30px; height:24px;
+  background:repeating-linear-gradient(90deg, var(--teal) 0 30px, transparent 30px 50px); opacity:.85;
+  -webkit-mask:repeating-linear-gradient(0deg,#000 0 8px,transparent 8px 16px);
+          mask:repeating-linear-gradient(0deg,#000 0 8px,transparent 8px 16px);}
+
+/* divider */
+.slide.divider{ background:var(--navy);}
+.divider .dline{ position:absolute; left:0; right:0; top:265px; height:7px; background:var(--dash);}
+.divider .dbox{ position:absolute; left:50%; top:150px; transform:translateX(-50%); width:228px; height:228px; border:2px solid var(--teal); border-radius:22px; background:#081428; display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:2;}
+.divider .dbox .dn{ font-family:'Manrope',sans-serif; font-weight:800; color:var(--teal); font-size:64px; line-height:1;}
+.divider .dbox .dl{ color:var(--teal); font-family:'Manrope',sans-serif; font-weight:700; font-size:16px; letter-spacing:.3em; margin-top:8px;}
+.divider .dtitle{ position:absolute; left:0; right:0; top:415px; text-align:center; font-family:'Manrope',sans-serif; font-weight:800; color:#fff; font-size:32px;}
+.divider .dcmds{ position:absolute; left:0; right:0; top:470px; text-align:center; font-style:italic; color:var(--muted); font-size:15px;}
+
+/* how-to / quick-ref grids */
+.htgrid{ display:grid; grid-template-columns:1fr 1fr; gap:18px 26px;}
+.htcard{ border:1.5px solid var(--teal); border-radius:10px; padding:16px 18px; min-height:120px;}
+.htcard.green{ border-color:var(--green);} .htcard.amber{ border-color:var(--amber);} .htcard.red{ border-color:var(--red);}
+.htcard .top{ display:flex; align-items:center; gap:14px; margin-bottom:9px;}
+.htcard .sq{ flex:none; width:42px; height:42px; border-radius:8px; background:var(--teal); color:#06283a; font-family:'Manrope',sans-serif; font-weight:800; font-size:16px; display:flex; align-items:center; justify-content:center;}
+.htcard.green .sq{ background:var(--green); color:#04241a;} .htcard.amber .sq{ background:var(--amber); color:#3a2c06;} .htcard.red .sq{ background:var(--red); color:#3a0f0b;}
+.htcard .lbl{ font-family:'Manrope',sans-serif; font-weight:700; font-size:14px; color:var(--teal); letter-spacing:.03em;}
+.htcard.green .lbl{ color:var(--green);} .htcard.amber .lbl{ color:var(--amber);} .htcard.red .lbl{ color:#e08379;}
+.htcard p{ font-size:13px; color:var(--body); line-height:1.4;}
+
+.qref{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px 16px;}
+.qcard{ border:1.5px solid var(--teal); border-radius:8px; padding:11px 14px;}
+.qcard.green{ border-color:var(--green);} .qcard.amber{ border-color:var(--amber);} .qcard.gray{ border-color:#3f5a72;}
+.qcard h4{ font-family:'Manrope',sans-serif; font-weight:700; color:var(--teal); font-size:12.5px; margin-bottom:8px;}
+.qcard.green h4{ color:var(--green);} .qcard.amber h4{ color:var(--amber);} .qcard.gray h4{ color:#9fb4c6;}
+.qcard code{ display:block; font-family:'DM Mono',monospace; font-size:11px; color:#c8d8e4; margin-bottom:5px;}
+.qcard code.dim{ color:var(--muted);}
+
+/* complete */
+.slide.complete{ background:var(--navy);}
+.complete .td{ position:absolute; left:0; right:0; top:30px; height:7px; background:var(--dash);}
+.complete .bd{ position:absolute; left:0; right:0; bottom:54px; height:7px; background:var(--dash);}
+.complete .eyebrow{ position:absolute; left:0; right:0; top:108px; text-align:center; color:var(--teal); font-family:'Manrope',sans-serif; font-weight:700; font-size:18px; letter-spacing:.36em;}
+.complete h1{ position:absolute; left:0; right:0; top:145px; text-align:center; font-family:'Manrope',sans-serif; font-weight:800; color:#fff; font-size:64px;}
+.complete .cul{ position:absolute; left:140px; right:140px; top:248px; height:3px; background:var(--teal);}
+.complete .cols{ position:absolute; left:70px; right:70px; top:280px; display:grid; grid-template-columns:1fr 1fr; gap:18px 50px;}
+.complete .ci{ display:flex; gap:12px; font-size:14.5px; color:var(--body);}
+.complete .ci .ck{ color:var(--teal); font-weight:700;}
+.complete .foot{ position:absolute; left:0; right:0; bottom:74px; text-align:center; font-style:italic; color:var(--muted); font-size:15px;}
+
+/* controls */
+#prog{ position:fixed; left:60px; bottom:64px; height:3px; background:var(--teal); z-index:51; transition:width .3s ease;}
+#bar{ position:fixed; left:0; right:0; bottom:0; height:64px; background:rgba(7,13,24,.97); backdrop-filter:blur(8px); display:flex; align-items:center; gap:14px; padding:0 18px; z-index:50; border-top:1px solid rgba(255,255,255,.08);}
+#bar .title{ color:#cfe0ec; font-size:13px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; flex:1; min-width:0;}
+#bar .title b{ color:var(--teal); font-family:'Manrope',sans-serif; margin-right:8px;}
+.btn{ appearance:none; border:1px solid rgba(255,255,255,.16); background:rgba(255,255,255,.06); color:#eaf3fa; width:40px; height:40px; border-radius:10px; cursor:pointer; font-size:18px; display:flex; align-items:center; justify-content:center; transition:.15s;}
+.btn:hover{ background:var(--teal); border-color:var(--teal); color:#06283a;}
+.btn:focus-visible{ outline:2px solid var(--teal); outline-offset:2px;}
+.btn.wide{ width:auto; padding:0 14px; font-size:13px; font-weight:600; font-family:'Inter';}
+#count{ color:#9fb6c6; font-size:13px; font-variant-numeric:tabular-nums; min-width:62px; text-align:center;}
+#ov{ position:fixed; inset:0; background:rgba(6,12,24,.97); z-index:100; display:none; padding:30px; overflow:auto;}
+#ov.open{ display:block;}
+#ov h2{ color:#fff; font-family:'Manrope'; font-weight:800; font-size:20px; margin-bottom:18px; text-align:center;}
+.ovgrid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:12px; max-width:1200px; margin:0 auto;}
+.ovcard{ background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1); border-radius:10px; padding:13px; cursor:pointer; transition:.15s; min-height:74px;}
+.ovcard:hover{ background:var(--teal); color:#06283a; transform:translateY(-2px);}
+.ovcard .n{ font-family:'Manrope'; font-weight:800; font-size:12px; color:var(--teal); margin-bottom:5px;}
+.ovcard:hover .n{ color:#06283a;}
+.ovcard .t{ font-size:12px; color:#dce8f1; line-height:1.3; font-weight:500;}
+.ovcard:hover .t{ color:#06283a;}
+#ov .close{ position:fixed; top:20px; right:24px;}
+.hint{ position:fixed; bottom:74px; left:calc(50% + 30px); transform:translateX(-50%); color:#9fb6c6; font-size:11px; z-index:49; background:rgba(7,13,24,.85); padding:5px 12px; border-radius:20px; pointer-events:none; transition:opacity .4s;}
+
+@media print{
+  @page{ size:1000px 562.5px; margin:0;}
+  body{ overflow:visible; background:#fff;}
+  #bar,#prog,#ov,.hint{ display:none !important;}
+  #stage{ position:static; inset:auto;}
+  #scaler{ transform:none !important; width:1000px; height:auto;}
+  .slide{ position:relative; opacity:1 !important; visibility:visible !important; page-break-after:always; break-after:page;}
+}
+@media (max-width:560px){ #bar .title{ display:none;} }
+
+/* back-to-index link */
+.idxlink{ text-decoration:none; display:inline-flex; align-items:center; justify-content:center; gap:6px; white-space:nowrap;}
+.idxlink:hover{ background:rgba(255,255,255,.14);}
+
+
+/* left sidebar: previous/next module navigation (visible on all slides) */
+#sidenav{ position:fixed; left:0; top:0; bottom:64px; width:60px; z-index:50;
+  display:flex; flex-direction:column;
+  background:rgba(4,24,46,.96); -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px);
+  border-right:1px solid rgba(255,255,255,.08);}
+.side-link{ flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px;
+  text-decoration:none; color:#cfe0ee; font-family:'Manrope',sans-serif; font-weight:600; font-size:11.5px;
+  text-align:center; transition:background .15s ease, color .15s ease;}
+.side-link:hover{ background:rgba(255,255,255,.07); color:#fff;}
+.side-link .si{ font-size:18px; line-height:1;}
+.side-link .sl{ writing-mode:vertical-rl; text-orientation:mixed; letter-spacing:.03em; white-space:nowrap;}
+.side-prev{ border-bottom:1px solid rgba(255,255,255,.08);}
+@media (max-width:560px){ #sidenav{ width:44px;} .side-link .sl{ font-size:10px;} .side-link .si{ font-size:15px;} }
+</style>
+</head>
+<body>
+<div id="prog"></div>
+<div id="stage"><div id="scaler">
+<!-- 1 TITLE -->
+<section class="slide cover" data-title="Title — Linux Commands Workbook">
+<div class="checker"></div>
+  <div class="eyebrow">HANDS-ON LAB</div>
+  <h1>Linux Commands<br>Workbook</h1>
+  <div class="ci">For AMHS Systems — Ubuntu VM Practice Edition</div>
+  <div class="cul"></div>
+  <div class="csub">Step-by-step exercises with answer key&nbsp; •&nbsp; All practice on safe VM environment</div>
+  <div class="botdash"></div>
+</section>
+
+<!-- 2 HOW TO USE -->
+<section class="slide" data-title="How to Use This Workbook">
+  <div class="lhead"><div class="ltitle">How to Use This Workbook</div></div>
+  <div class="dash"></div>
+  <div class="lbody">
+    <div class="htgrid">
+      <div class="htcard"><div class="top"><div class="sq">01</div><div class="lbl">EXERCISE SLIDES</div></div><p>Each lab has step-by-step instructions. Follow every numbered step in order. Type commands exactly as shown.</p></div>
+      <div class="htcard green"><div class="top"><div class="sq">02</div><div class="lbl">ANSWER KEY SLIDES</div></div><p>After each exercise, a green answer slide shows the expected terminal output. Compare your output — small differences are OK.</p></div>
+      <div class="htcard amber"><div class="top"><div class="sq">03</div><div class="lbl">UBUNTU NOTES</div></div><p>Yellow boxes highlight commands that are different on Ubuntu vs RHEL 5.5. Both versions are shown — learn both!</p></div>
+      <div class="htcard red"><div class="top"><div class="sq">04</div><div class="lbl">SAFE VM ONLY</div></div><p>All commands are run on your Ubuntu VM. Never run these on the real AMHS server. The VM is your learning sandbox.</p></div>
+    </div>
+  </div>
+  <div class="lfoot"><span>AMHS Linux Lab Workbook&nbsp; •&nbsp; Ubuntu VM Practice</span><span>2</span></div>
+</section>
+
+<!-- 3 LAB 0 SETUP -->
+<section class="slide" data-title="Lab 0: Setup — Practice Environment">
+  <div class="lhead"><div class="ltitle">Lab 0: Setup — Create Your Practice Environment</div><div class="lsub">Run these commands first — sets up all files used in later labs</div><div class="badge">SETUP</div></div>
+  <div class="dash"></div>
+  <div class="lbody">
+    <p class="note-intro">Run this one-time setup in your Ubuntu VM terminal:</p>
+    <div class="term"><pre><span class="cmt"># Create practice directory tree</span>
+<span class="cmd">mkdir -p ~/amhs-practice/logs ~/amhs-practice/backup ~/amhs-practice/config</span>
+<span class="cmt"># Create a fake AMHS config file</span>
+<span class="cmd">echo 'hostname=AMHS-SERVER-01' > ~/amhs-practice/config/amhs.conf</span>
+<span class="cmd">echo 'port=102'              >> ~/amhs-practice/config/amhs.conf</span>
+<span class="cmd">echo 'protocol=X400'        >> ~/amhs-practice/config/amhs.conf</span>
+<span class="cmt"># Create fake log files</span>
+<span class="cmd">for i in 1 2 3; do
+  echo "[INFO]  AMHS service started" > ~/amhs-practice/logs/amhs.log.$i
+  echo "[INFO]  Connection from 192.168.1.$i" >> ~/amhs-practice/logs/amhs.log.$i
+  echo "[ERROR] Timeout on port 102" >> ~/amhs-practice/logs/amhs.log.$i
+  echo "[INFO]  Retry successful"    >> ~/amhs-practice/logs/amhs.log.$i
+done</span>
+<span class="cmt"># Create a text file for practice</span>
+<span class="cmd">echo 'AFTN EGGGZQZX' > ~/amhs-practice/message.txt
+echo 'FF VHHHYNYX'   >> ~/amhs-practice/message.txt
+echo 'END OF MESSAGE' >> ~/amhs-practice/message.txt
+echo 'Setup complete! Run: ls ~/amhs-practice/'</span></pre></div>
+  </div>
+  <div class="lfoot"><span>AMHS Linux Lab Workbook&nbsp; •&nbsp; Ubuntu VM Practice</span><span>3</span></div>
+</section>
+
+<!-- 4 DIVIDER LAB 1 -->
+<section class="slide divider" data-title="Lab 1 · System Information">
+  <div class="dline"></div>
+  <div class="dbox"><div class="dn">1</div><div class="dl">LAB</div></div>
+  <div class="dtitle">System Information</div>
+  <div class="dcmds">uname&nbsp; •&nbsp; hostname&nbsp; •&nbsp; uptime&nbsp; •&nbsp; date&nbsp; •&nbsp; who&nbsp; •&nbsp; id</div>
+</section>
+
+<!-- 5 LAB 1 EXERCISE -->
+<section class="slide" data-title="Lab 1: System Information (Exercise)">
+  <div class="lhead"><div class="ltitle">Lab 1: System Information</div><div class="lsub">Check the state of your Ubuntu VM</div><div class="badge">EXERCISE</div></div>
+  <div class="dash"></div>
+  <div class="lbody">
+    <span class="epill">EXERCISE</span>
+    <p class="note-intro" style="margin-bottom:9px">Follow these steps in order:</p>
+    <div class="steps inline">
+      <div class="step"><div class="snum">1</div><div class="sbody"><div class="ins">Find out which Linux version is running:</div><div class="cmd">uname -a</div></div></div>
+      <div class="step"><div class="snum">2</div><div class="sbody"><div class="ins">Check OS details (Ubuntu-specific):</div><div class="cmd">lsb_release -a</div></div></div>
+      <div class="step"><div class="snum">3</div><div class="sbody"><div class="ins">Print the hostname of this machine:</div><div class="cmd">hostname</div></div></div>
+      <div class="step"><div class="snum">4</div><div class="sbody"><div class="ins">See how long the VM has been running:</div><div class="cmd">uptime</div></div></div>
+      <div class="step"><div class="snum">5</div><div class="sbody"><div class="ins">Check the current date and time:</div><div class="cmd">date</div></div></div>
+      <div class="step"><div class="snum">6</div><div class="sbody"><div class="ins">See who is currently logged in:</div><div class="cmd">who</div></div></div>
+      <div class="step"><div class="snum">7</div><div class="sbody"><div class="ins">See your own user info and groups:</div><div class="cmd">id</div></div></div>
+      <!--<div class="step"><div class="snum">8</div><div class="sbody"><div class="ins">Check environment variables:</div><div class="cmd">env | head -20</div></div></div>-->
+    </div>
+    <div class="unote"><div class="uh">UBUNTU NOTE</div><p>Ubuntu uses <span class="mono">lsb_release -a</span> instead of <span class="mono">cat /etc/redhat-release</span>. Both give OS version — just different syntax for different Linux families.</p></div>
+  </div>
+  <div class="lfoot"><span>AMHS Linux Lab Workbook&nbsp; •&nbsp; Ubuntu VM Practice</span><span>5</span></div>
+</section>
+
+<!-- 6 LAB 1 ANSWER -->
+<section class="slide" data-title="Lab 1: Answer Key">
+  <div class="lhead"><div class="ltitle">Lab 1: Answer Key — Expected Output</div><div class="lsub">Your output will differ slightly — that is normal</div><div class="badge green">ANSWER KEY</div></div>
+  <div class="dash"></div>
+  <div class="lbody">
+    <div class="ans2">
+      <div class="term green"><div class="lbl">Expected Output:</div><pre><span class="pr">$ uname -a</span>
+Linux ubuntu-vm 5.15.0-91-generic #101-Ubuntu SMP Tue Nov 14...
+<span class="pr">$ lsb_release -a</span>
+Distributor ID: Ubuntu   Release: 22.04   Codename: jammy
+<span class="pr">$ hostname</span>
+ubuntu-vm   (or whatever name you gave your VM)
+<span class="pr">$ uptime</span>
+ 09:15:02 up  2:31,  1 user,  load average: 0.05, 0.04, 0.01
+<span class="pr">$ who</span>
+student  pts/0  2024-01-15 07:00 (:0)
+<span class="pr">$ id</span>
+uid=1000(student) gid=1000(student) groups=1000(student),4(adm),27(sudo)...</pre></div>
+      <div class="ans-note"><div class="nh">GRADING GUIDE</div><p>Exact versions and names will differ per VM. Key things to check: (1) uname shows 'Linux', (2) lsb_release shows 'Ubuntu', (3) hostname returns a name, (4) uptime shows 'up X days/hours', (5) id shows the student username.</p></div>
+    </div>
+  </div>
+  <div class="lfoot"><span>AMHS Linux Lab Workbook&nbsp; •&nbsp; Ubuntu VM Practice</span><span>6</span></div>
+</section>
+
+<!-- 7 DIVIDER LAB 2 -->
+<section class="slide divider" data-title="Lab 2 · File System Navigation">
+  <div class="dline"></div>
+  <div class="dbox"><div class="dn">2</div><div class="dl">LAB</div></div>
+  <div class="dtitle">File System Navigation</div>
+  <div class="dcmds">pwd&nbsp; •&nbsp; ls&nbsp; •&nbsp; cd&nbsp; •&nbsp; mkdir&nbsp; •&nbsp; cp&nbsp; •&nbsp; mv&nbsp; •&nbsp; rm</div>
+</section>
+
+<!-- 8 LAB 2 EXERCISE -->
+<section class="slide" data-title="Lab 2: File System Navigation (Exercise)">
+  <div class="lhead"><div class="ltitle">Lab 2: File System Navigation</div><div class="lsub">Navigate directories and manage files</div><div class="badge">EXERCISE</div></div>
+  <div class="dash"></div>
+  <div class="lbody">
+    <div class="steps two" style="gap:7px 30px">
+      <div class="step"><div class="snum">1</div><div class="sbody"><div class="ins">Print your current directory location</div><div class="cmd">pwd</div></div></div>
+      <div class="step"><div class="snum">9</div><div class="sbody"><div class="ins">List the reports folder to confirm copy</div><div class="cmd">ls -lh reports/</div></div></div>
+      <div class="step"><div class="snum">2</div><div class="sbody"><div class="ins">Go to your practice folder</div><div class="cmd">cd ~/amhs-practice</div></div></div>
+      <div class="step"><div class="snum">10</div><div class="sbody"><div class="ins">Make a renamed copy inside reports/</div><div class="cmd">cp message.txt reports/message_backup.txt</div></div></div>
+      <div class="step"><div class="snum">3</div><div class="sbody"><div class="ins">List everything with details (size, date, perms)</div><div class="cmd">ls -lh</div></div></div>
+      <div class="step"><div class="snum">11</div><div class="sbody"><div class="ins">Move (rename) message.txt to message_orig.txt</div><div class="cmd">mv message.txt message_orig.txt</div></div></div>
+      <div class="step"><div class="snum">4</div><div class="sbody"><div class="ins">Go into the logs folder</div><div class="cmd">cd logs</div></div></div>
+      <div class="step"><div class="snum">12</div><div class="sbody"><div class="ins">Verify the rename</div><div class="cmd">ls -lh</div></div></div>
+      <div class="step"><div class="snum">5</div><div class="sbody"><div class="ins">List files, sorted by modification time (newest first)</div><div class="cmd">ls -lt</div></div></div>
+      <div class="step"><div class="snum">13</div><div class="sbody"><div class="ins">Delete the renamed file</div><div class="cmd">rm message_orig.txt</div></div></div>
+      <div class="step"><div class="snum">6</div><div class="sbody"><div class="ins">Go back up one level to amhs-practice</div><div class="cmd">cd ..</div></div></div>
+      <div class="step"><div class="snum">14</div><div class="sbody"><div class="ins">Confirm it is gone</div><div class="cmd">ls -lh</div></div></div>
+      <div class="step"><div class="snum">7</div><div class="sbody"><div class="ins">Create a new subdirectory called 'reports'</div><div class="cmd">mkdir reports</div></div></div>
+      <div class="step"><div class="snum">15</div><div class="sbody"><div class="ins">Try tab-completion: type 'cd rep' then press Tab</div><div class="cmd plain">(press Tab key)</div></div></div>
+      <div class="step"><div class="snum">8</div><div class="sbody"><div class="ins">Copy message.txt into the reports folder</div><div class="cmd">cp message.txt reports/</div></div></div>
+      <div class="step"><div class="snum">16</div><div class="sbody"><div class="ins">Return to home directory</div><div class="cmd">cd ~</div></div></div>
+    </div>
+  </div>
+  <div class="lfoot"><span>AMHS Linux Lab Workbook&nbsp; •&nbsp; Ubuntu VM Practice</span><span>8</span></div>
+</section>
+
+<!-- 9 LAB 2 ANSWER -->
+<section class="slide" data-title="Lab 2: Answer Key">
+  <div class="lhead"><div class="ltitle">Lab 2: Answer Key — Expected Output</div><div class="badge green">ANSWER KEY</div></div>
+  <div class="dash"></div>
+  <div class="lbody">
+    <div class="ans2">
+      <div class="term green"><div class="lbl">Expected Output:</div><pre><span class="pr">$ pwd</span>
+/home/student
+<span class="pr">$ cd ~/amhs-practice &amp;&amp; ls -lh</span>
+total 24K
+drwxrwxr-x 2 student student 4.0K Jan 15 backup/
+drwxrwxr-x 2 student student 4.0K Jan 15 config/
+drwxrwxr-x 2 student student 4.0K Jan 15 logs/
+-rw-rw-r-- 1 student student   54 Jan 15 message.txt
+<span class="pr">$ mkdir reports &amp;&amp; cp message.txt reports/ &amp;&amp; ls reports/</span>
+message.txt
+<span class="pr">$ mv message.txt message_orig.txt &amp;&amp; ls -lh</span>
+-rw-rw-r-- 1 student student 54 Jan 15 message_orig.txt
+<span class="pr">$ rm message_orig.txt &amp;&amp; ls -lh</span>
+(message_orig.txt is gone — only reports/ and other dirs remain)</pre></div>
+      <div class="ans-note"><div class="nh">KEY THINGS TO VERIFY</div>
+        <p><span class="ok">✔</span> ls -lh shows permissions, owner, size, date<br>
+        <span class="ok">✔</span> ls -lt shows newest files at the top<br>
+        <span class="ok">✔</span> cp leaves original, mv does not<br>
+        <span class="ok">✔</span> After rm, the file is completely gone<br>
+        <span class="ok">✔</span> Tab key auto-completes 'rep' to 'reports/'</p>
+        <p style="margin-top:9px"><b style="color:#e88a7e">Common mistakes to watch for:</b><br>
+        <span class="bad">✘</span> Forgetting the trailing / in cp dest<br>
+        <span class="bad">✘</span> Using rm -r on a directory accidentally<br>
+        <span class="bad">✘</span> Confusing cp (copy) with mv (move/rename)</p>
+      </div>
+    </div>
+  </div>
+  <div class="lfoot"><span>AMHS Linux Lab Workbook&nbsp; •&nbsp; Ubuntu VM Practice</span><span>9</span></div>
+</section>
+
+<!-- 10 DIVIDER LAB 3 -->
+<section class="slide divider" data-title="Lab 3 · Reading Files &amp; Logs">
+  <div class="dline"></div>
+  <div class="dbox"><div class="dn">3</div><div class="dl">LAB</div></div>
+  <div class="dtitle">Reading Files &amp; Logs</div>
+  <div class="dcmds">cat&nbsp; •&nbsp; less&nbsp; •&nbsp; head&nbsp; •&nbsp; tail&nbsp; •&nbsp; grep&nbsp; •&nbsp; zgrep</div>
+</section>
+
+<!-- 11 LAB 3 EXERCISE -->
+<section class="slide" data-title="Lab 3: Reading Files &amp; Logs (Exercise)">
+  <div class="lhead"><div class="ltitle">Lab 3: Reading Files &amp; Logs</div><div class="lsub">Read, search, and monitor log files</div><div class="badge">EXERCISE</div></div>
+  <div class="dash"></div>
+  <div class="lbody">
+    <div class="steps two">
+      <div class="step"><div class="snum">1</div><div class="sbody"><div class="ins">Read the config file from top to bottom</div><div class="cmd">cat ~/amhs-practice/config/amhs.conf</div></div></div>
+      <div class="step"><div class="snum">6</div><div class="sbody"><div class="ins">Search case-insensitively (error, Error, ERROR)</div><div class="cmd">grep -i error ~/amhs-practice/logs/amhs.log.*</div></div></div>
+      <div class="step"><div class="snum">2</div><div class="sbody"><div class="ins">View a log file page by page (press q to quit)</div><div class="cmd">less ~/amhs-practice/logs/amhs.log.1</div></div></div>
+      <div class="step"><div class="snum">7</div><div class="sbody"><div class="ins">Count how many ERROR lines exist</div><div class="cmd">grep -c ERROR ~/amhs-practice/logs/amhs.log.*</div></div></div>
+      <div class="step"><div class="snum">3</div><div class="sbody"><div class="ins">Show only the first 5 lines of a log</div><div class="cmd">head -5 ~/amhs-practice/logs/amhs.log.1</div></div></div>
+      <div class="step"><div class="snum">8</div><div class="sbody"><div class="ins">Show 1 line before and after each ERROR</div><div class="cmd">grep -B1 -A1 ERROR ~/amhs-practice/logs/amhs.log.1</div></div></div>
+      <div class="step"><div class="snum">4</div><div class="sbody"><div class="ins">Show only the last 5 lines of a log</div><div class="cmd">tail -5 ~/amhs-practice/logs/amhs.log.1</div></div></div>
+      <div class="step"><div class="snum">9</div><div class="sbody"><div class="ins">Search for multiple keywords (ERROR or Timeout)</div><div class="cmd">grep -E 'ERROR|Timeout' ~/amhs-practice/logs/amhs.log.*</div></div></div>
+      <div class="step"><div class="snum">5</div><div class="sbody"><div class="ins">Search for all ERROR lines in all log files</div><div class="cmd">grep ERROR ~/amhs-practice/logs/amhs.log.*</div></div></div>
+      <div class="step"><div class="snum">10</div><div class="sbody"><div class="ins">Simulate live log watching (Ctrl+C to stop)</div><div class="cmd">tail -f ~/amhs-practice/logs/amhs.log.1</div></div></div>
+    </div>
+  </div>
+  <div class="lfoot"><span>AMHS Linux Lab Workbook&nbsp; •&nbsp; Ubuntu VM Practice</span><span>11</span></div>
+</section>
+
+<!-- 12 LAB 3 ANSWER -->
+<section class="slide" data-title="Lab 3: Answer Key">
+  <div class="lhead"><div class="ltitle">Lab 3: Answer Key — Expected Output</div><div class="badge green">ANSWER KEY</div></div>
+  <div class="dash"></div>
+  <div class="lbody">
+    <div class="ans2">
+      <div class="term green"><div class="lbl">Expected Output:</div><pre><span class="pr">$ cat ~/amhs-practice/config/amhs.conf</span>
+hostname=AMHS-SERVER-01
+port=102
+protocol=X400
+<span class="pr">$ grep ERROR ~/amhs-practice/logs/amhs.log.*</span>
+amhs.log.1:[ERROR] Timeout on port 102
+amhs.log.2:[ERROR] Timeout on port 102
+amhs.log.3:[ERROR] Timeout on port 102
+<span class="pr">$ grep -c ERROR ~/amhs-practice/logs/amhs.log.*</span>
+amhs.log.1:1
+amhs.log.2:1
+amhs.log.3:1
+<span class="pr">$ grep -B1 -A1 ERROR ~/amhs-practice/logs/amhs.log.1</span>
+[INFO]  Connection from 192.168.1.1
+[ERROR] Timeout on port 102
+[INFO]  Retry successful</pre></div>
+      <div class="term green"><div class="lbl">Expected Output:</div><pre><span class="pr">$ head -5 ~/amhs-practice/logs/amhs.log.1</span>
+[INFO]  AMHS service started
+[INFO]  Connection from 192.168.1.1
+[ERROR] Timeout on port 102
+[INFO]  Retry successful
+<span class="pr">$ tail -5 ~/amhs-practice/logs/amhs.log.1</span>
+(same — our file only has 4 lines)
+<span class="pr">$ grep -E 'ERROR|Timeout' amhs.log.1</span>
+[ERROR] Timeout on port 102
+(matches because both ERROR and Timeout are on same line)
+
+<span class="cmt">less navigation keys:</span>
+  Space = next page  |  b = back
+  /keyword = search  |  q = quit
+  G = end of file    |  g = start</pre></div>
+    </div>
+  </div>
+  <div class="lfoot"><span>AMHS Linux Lab Workbook&nbsp; •&nbsp; Ubuntu VM Practice</span><span>12</span></div>
+</section>
+
+<!-- 13 DIVIDER LAB 4 -->
+<section class="slide divider" data-title="Lab 4 · Process Monitoring">
+  <div class="dline"></div>
+  <div class="dbox"><div class="dn">4</div><div class="dl">LAB</div></div>
+  <div class="dtitle">Process Monitoring</div>
+  <div class="dcmds">ps&nbsp; •&nbsp; top&nbsp; •&nbsp; kill&nbsp; •&nbsp; grep (process filter)</div>
+</section>
+
+<!-- 14 LAB 4 EXERCISE -->
+<section class="slide" data-title="Lab 4: Process Monitoring (Exercise)">
+  <div class="lhead"><div class="ltitle">Lab 4: Process Monitoring</div><div class="lsub">See what is running on your system</div><div class="badge">EXERCISE</div></div>
+  <div class="dash"></div>
+  <div class="lbody">
+    <div class="steps two">
+      <div class="step"><div class="snum">1</div><div class="sbody"><div class="ins">Show all running processes with details</div><div class="cmd">ps -ef</div></div></div>
+      <div class="step"><div class="snum">6</div><div class="sbody"><div class="ins">In top: sort by CPU usage</div><div class="cmd plain">(inside top, press P)</div></div></div>
+      <div class="step"><div class="snum">2</div><div class="sbody"><div class="ins">Show processes as a tree (parent → child)</div><div class="cmd">ps -efH | head -30</div></div></div>
+      <div class="step"><div class="snum">7</div><div class="sbody"><div class="ins">In top: sort by Memory usage</div><div class="cmd plain">(inside top, press M)</div></div></div>
+      <div class="step"><div class="snum">3</div><div class="sbody"><div class="ins">Find the SSH service process</div><div class="cmd">ps -ef | grep sshd</div></div></div>
+      <div class="step"><div class="snum">8</div><div class="sbody"><div class="ins">Show a one-time snapshot from top (no interactive)</div><div class="cmd">top -bn1 | head -20</div></div></div>
+      <div class="step"><div class="snum">4</div><div class="sbody"><div class="ins">Find your own processes only</div><div class="cmd">ps -u $USER</div></div></div>
+      <div class="step"><div class="snum">9</div><div class="sbody"><div class="ins">Count total number of running processes</div><div class="cmd">ps -ef | wc -l</div></div></div>
+      <div class="step"><div class="snum">5</div><div class="sbody"><div class="ins">Open the real-time process viewer (q to quit)</div><div class="cmd">top</div></div></div>
+      <div class="step"><div class="snum">10</div><div class="sbody"><div class="ins">Find processes containing the word 'bash'</div><div class="cmd">ps -ef | grep bash</div></div></div>
+    </div>
+    <div class="unote"><div class="uh">AMHS REAL-WORLD NOTE</div><p>On the actual AMHS server, you would use: <span class="mono">ps -ef | grep amhs</span>. This shows whether the AMHS process is running. On our VM we use 'sshd' as a stand-in.</p></div>
+  </div>
+  <div class="lfoot"><span>AMHS Linux Lab Workbook&nbsp; •&nbsp; Ubuntu VM Practice</span><span>14</span></div>
+</section>
+
+<!-- 15 LAB 4 ANSWER -->
+<section class="slide" data-title="Lab 4: Answer Key">
+  <div class="lhead"><div class="ltitle">Lab 4: Answer Key — Expected Output</div><div class="badge green">ANSWER KEY</div></div>
+  <div class="dash"></div>
+  <div class="lbody">
+    <div class="ans2">
+      <div class="term green"><div class="lbl">Expected Output:</div><pre><span class="pr">$ ps -ef | head -6</span>
+UID     PID  PPID  C  STIME TTY   TIME     CMD
+root      1     0  0  07:00 ?     00:00:01 /sbin/init
+root      2     0  0  07:00 ?     00:00:00 [kthreadd]
+student 1234   956  0  07:05 pts/0 00:00:00 bash
+student 2345  1234  0  09:00 pts/0 00:00:00 ps -ef
+<span class="pr">$ ps -ef | grep sshd</span>
+root   876    1  0 07:00 ?   00:00:00 /usr/sbin/sshd -D
+student 2350 1234  0 09:01 pts/0 00:00:00 grep --color=auto sshd
+<span class="cmt">NOTE: The second line (grep itself) always appears.
+Use 'grep -v grep' to hide it:
+  ps -ef | grep sshd | grep -v grep</span></pre></div>
+      <div class="term green"><div class="lbl">Expected Output:</div><pre><span class="cmt">top output (partial):</span>
+top - 09:15:02 up 2:31  load average: 0.05, 0.04
+Tasks: 112 total,  1 running, 111 sleeping
+%Cpu(s):  0.3 us, 0.1 sy,  0.0 ni, 99.5 id
+MiB Mem :   1987.9 total,   800.0 free
+  PID USER    %CPU %MEM  COMMAND
+ 1234 student  0.3  0.1  top
+  876 root     0.0  0.1  sshd
+<span class="cmt">top keyboard shortcuts:
+  P = sort by CPU   |  M = sort by Memory
+  k = kill process  |  q = quit
+  1 = show each CPU core separately</span>
+<span class="pr">$ ps -ef | wc -l</span>
+113   (varies by system)</pre></div>
+    </div>
+  </div>
+  <div class="lfoot"><span>AMHS Linux Lab Workbook&nbsp; •&nbsp; Ubuntu VM Practice</span><span>15</span></div>
+</section>
+
+<!-- 16 DIVIDER LAB 5 -->
+<section class="slide divider" data-title="Lab 5 · Service Management">
+  <div class="dline"></div>
+  <div class="dbox"><div class="dn">5</div><div class="dl">LAB</div></div>
+  <div class="dtitle">Service Management</div>
+  <div class="dcmds">systemctl (Ubuntu)&nbsp; •&nbsp; service&nbsp; •&nbsp; chkconfig (RHEL)</div>
+</section>
+
+<!-- 17 LAB 5 EXERCISE (two panels) -->
+<section class="slide" data-title="Lab 5: Service Management (Exercise)">
+  <div class="lhead"><div class="ltitle">Lab 5: Service Management</div><div class="lsub">Start, stop, check, and restart services</div><div class="badge">EXERCISE</div></div>
+  <div class="dash"></div>
+  <div class="lbody">
+    <div class="panels">
+      <div class="panel">
+        <div class="ph">UBUNTU VM&nbsp; (systemctl)</div>
+        <div class="pstep"><div class="snum">1</div><div class="pins">Check status of the SSH service</div></div><div class="pcmd">sudo systemctl status ssh</div>
+        <div class="pstep"><div class="snum">2</div><div class="pins">List all running services</div></div><div class="pcmd">systemctl list-units --type=service --state=running</div>
+        <div class="pstep"><div class="snum">3</div><div class="pins">Stop the SSH service (careful!)</div></div><div class="pcmd">sudo systemctl stop ssh</div>
+        <div class="pstep"><div class="snum">4</div><div class="pins">Start it again</div></div><div class="pcmd">sudo systemctl start ssh</div>
+        <div class="pstep"><div class="snum">5</div><div class="pins">Restart in one step</div></div><div class="pcmd">sudo systemctl restart ssh</div>
+        <div class="pstep"><div class="snum">6</div><div class="pins">Check if service auto-starts on boot</div></div><div class="pcmd">sudo systemctl is-enabled ssh</div>
+        <div class="pstep"><div class="snum">7</div><div class="pins">Enable auto-start on boot</div></div><div class="pcmd">sudo systemctl enable ssh</div>
+      </div>
+      <div class="panel amber">
+        <div class="ph">RHEL 5.5 (REAL AMHS SERVER)&nbsp; — For Reference Only</div>
+        <div class="pstep"><div class="snum amber">1</div><div class="pins">Check AMHS service status</div></div><div class="pcmd">service amhs status</div>
+        <div class="pstep"><div class="snum amber">2</div><div class="pins">List all services and their state</div></div><div class="pcmd">chkconfig --list</div>
+        <div class="pstep"><div class="snum amber">3</div><div class="pins">Stop the AMHS service</div></div><div class="pcmd">service amhs stop</div>
+        <div class="pstep"><div class="snum amber">4</div><div class="pins">Start the AMHS service</div></div><div class="pcmd">service amhs start</div>
+        <div class="pstep"><div class="snum amber">5</div><div class="pins">Restart the AMHS service</div></div><div class="pcmd">service amhs restart</div>
+        <div class="pstep"><div class="snum amber">6</div><div class="pins">Check if AMHS starts on boot</div></div><div class="pcmd">chkconfig amhs --list</div>
+        <div class="pstep"><div class="snum amber">7</div><div class="pins">Enable AMHS to start on boot</div></div><div class="pcmd">chkconfig amhs on</div>
+      </div>
+    </div>
+  </div>
+  <div class="lfoot"><span>AMHS Linux Lab Workbook&nbsp; •&nbsp; Ubuntu VM Practice</span><span>17</span></div>
+</section>
+
+<!-- 18 LAB 5 ANSWER -->
+<section class="slide" data-title="Lab 5: Answer Key">
+  <div class="lhead"><div class="ltitle">Lab 5: Answer Key — Service Status Output</div><div class="badge green">ANSWER KEY</div></div>
+  <div class="dash"></div>
+  <div class="lbody">
+    <div class="ans2">
+      <div class="term green"><div class="lbl">Expected Output:</div><pre><span class="pr">$ sudo systemctl status ssh</span>
+● ssh.service - OpenBSD Secure Shell server
+   Loaded: loaded (/lib/systemd/system/ssh.service; enabled)
+   Active: active (running) since Mon 2024-01-15 07:00
+  Process: 876 ExecStartPre=/usr/sbin/sshd -t (status=0)
+ Main PID: 893 (sshd)
+    Tasks: 1 (limit: 1111)
+   CGroup: /system.slice/ssh.service
+           └─893 /usr/sbin/sshd -D
+<span class="pr">$ sudo systemctl stop ssh</span>   (no output = success)
+<span class="pr">$ sudo systemctl start ssh</span>  (no output = success)
+<span class="pr">$ sudo systemctl is-enabled ssh</span>
+enabled</pre></div>
+      <div class="ans-note"><div class="nh">COMPARISON TABLE</div>
+        <p class="mono" style="font-size:11px;line-height:1.55;color:var(--body)">Action&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ubuntu (VM)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RHEL 5.5<br>
+        Status&nbsp;&nbsp;&nbsp;&nbsp;systemctl status ssh&nbsp;&nbsp;service amhs status<br>
+        Start&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;systemctl start ssh&nbsp;&nbsp;&nbsp;service amhs start<br>
+        Stop&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;systemctl stop ssh&nbsp;&nbsp;&nbsp;&nbsp;service amhs stop<br>
+        Restart&nbsp;&nbsp;systemctl restart ssh&nbsp;service amhs restart<br>
+        Enable&nbsp;&nbsp;&nbsp;systemctl enable ssh&nbsp;&nbsp;chkconfig amhs on<br>
+        List all&nbsp;systemctl list-units&nbsp;&nbsp;chkconfig --list</p>
+        <p style="margin-top:8px"><span style="color:#5fd6a6">● Green dot</span> = service is running<br><span style="color:#ff8b7a">● Red dot</span> = service is stopped/failed</p>
+      </div>
+    </div>
+  </div>
+  <div class="lfoot"><span>AMHS Linux Lab Workbook&nbsp; •&nbsp; Ubuntu VM Practice</span><span>18</span></div>
+</section>
+
+<!-- 19 DIVIDER LAB 6 -->
+<section class="slide divider" data-title="Lab 6 · Network Commands">
+  <div class="dline"></div>
+  <div class="dbox"><div class="dn">6</div><div class="dl">LAB</div></div>
+  <div class="dtitle">Network Commands</div>
+  <div class="dcmds">hostname&nbsp; •&nbsp; ifconfig/ip&nbsp; •&nbsp; ping&nbsp; •&nbsp; route&nbsp; •&nbsp; netstat&nbsp; •&nbsp; telnet</div>
+</section>
+
+<!-- 20 LAB 6 EXERCISE -->
+<section class="slide" data-title="Lab 6: Network Commands (Exercise)">
+  <div class="lhead"><div class="ltitle">Lab 6: Network Commands</div><div class="lsub">Check IP, test connectivity, and inspect open ports</div><div class="badge">EXERCISE</div></div>
+  <div class="dash"></div>
+  <div class="lbody">
+    <div class="steps two" style="gap:6px 30px">
+      <div class="step"><div class="snum">1</div><div class="sbody"><div class="ins">Show network interfaces and IP addresses (Ubuntu)</div><div class="cmd">ip addr show</div></div></div>
+      <div class="step"><div class="snum">7</div><div class="sbody"><div class="ins">Show the routing table (Ubuntu)</div><div class="cmd">ip route show</div></div></div>
+      <div class="step"><div class="snum">2</div><div class="sbody"><div class="ins">Show IP address (classic — install if needed)</div><div class="cmd">ifconfig &nbsp;OR&nbsp; sudo apt install net-tools</div></div></div>
+      <div class="step"><div class="snum">8</div><div class="sbody"><div class="ins">Show the routing table (classic method)</div><div class="cmd">route -n</div></div></div>
+      <div class="step"><div class="snum">3</div><div class="sbody"><div class="ins">Show just your main IP address (quick)</div><div class="cmd">hostname -I</div></div></div>
+      <div class="step"><div class="snum">9</div><div class="sbody"><div class="ins">Show all listening ports (Ubuntu method)</div><div class="cmd">ss -tlnp</div></div></div>
+      <div class="step"><div class="snum">4</div><div class="sbody"><div class="ins">Ping the local loopback (always works)</div><div class="cmd">ping -c 4 127.0.0.1</div></div></div>
+      <div class="step"><div class="snum">10</div><div class="sbody"><div class="ins">Show all listening ports (classic method)</div><div class="cmd">netstat -tlnp</div></div></div>
+      <div class="step"><div class="snum">5</div><div class="sbody"><div class="ins">Ping the VM's own IP (from step 1)</div><div class="cmd">ping -c 4 &lt;your-ip&gt;</div></div></div>
+      <div class="step"><div class="snum">11</div><div class="sbody"><div class="ins">Test if port 22 (SSH) is open on localhost</div><div class="cmd">telnet 127.0.0.1 22</div></div></div>
+      <div class="step"><div class="snum">6</div><div class="sbody"><div class="ins">Ping an external host (requires internet)</div><div class="cmd">ping -c 4 8.8.8.8</div></div></div>
+      <div class="step"><div class="snum">12</div><div class="sbody"><div class="ins">Exit telnet connection</div><div class="cmd plain">(press Ctrl+] then type quit)</div></div></div>
+    </div>
+    <div class="unote"><div class="uh">UBUNTU NOTE</div><p>Ubuntu uses <span class="mono">ip addr</span> and <span class="mono">ss</span> by default. <span class="mono">ifconfig</span> and <span class="mono">netstat</span> need net-tools: <span class="mono">sudo apt install net-tools</span>. On RHEL 5.5, ifconfig and netstat are built-in.</p></div>
+  </div>
+  <div class="lfoot"><span>AMHS Linux Lab Workbook&nbsp; •&nbsp; Ubuntu VM Practice</span><span>20</span></div>
+</section>
+
+<!-- 21 LAB 6 ANSWER -->
+<section class="slide" data-title="Lab 6: Answer Key">
+  <div class="lhead"><div class="ltitle">Lab 6: Answer Key — Network Output</div><div class="badge green">ANSWER KEY</div></div>
+  <div class="dash"></div>
+  <div class="lbody">
+    <div class="ans2">
+      <div class="term green"><div class="lbl">Expected Output:</div><pre><span class="pr">$ ip addr show (partial)</span>
+1: lo: &lt;LOOPBACK,UP&gt; mtu 65536
+    inet 127.0.0.1/8 scope host lo
+2: eth0: &lt;BROADCAST,MULTICAST,UP&gt; mtu 1500
+    inet 192.168.1.100/24 brd 192.168.1.255
+<span class="pr">$ ping -c 4 127.0.0.1</span>
+PING 127.0.0.1: 56 bytes of data.
+64 bytes from 127.0.0.1: icmp_seq=1 ttl=64 time=0.023 ms
+64 bytes from 127.0.0.1: icmp_seq=2 ttl=64 time=0.021 ms
+--- 127.0.0.1 ping statistics ---
+4 packets transmitted, 4 received, 0% packet loss
+<span class="pr">$ ss -tlnp</span>
+State  Recv-Q Send-Q Local Address:Port
+LISTEN 0      128    0.0.0.0:22    (sshd)</pre></div>
+      <div class="term green"><div class="lbl">Expected Output:</div><pre><span class="pr">$ ip route show</span>
+default via 192.168.1.1 dev eth0
+192.168.1.0/24 dev eth0 proto kernel
+<span class="cmt">KEY: 'default via X.X.X.X' = your gateway (router)</span>
+<span class="pr">$ telnet 127.0.0.1 22</span>
+Trying 127.0.0.1...
+Connected to 127.0.0.1.
+SSH-2.0-OpenSSH_8.9p1 Ubuntu
+(Ctrl+] then 'quit' to exit)
+<span class="cmt">Port reference for AMHS work:
+  22  = SSH (admin access)
+  102 = X.400 / AMHS messaging
+  80  = HTTP    443 = HTTPS</span>
+Use: telnet &lt;amhs-ip&gt; 102  (on real server only)</pre></div>
+    </div>
+  </div>
+  <div class="lfoot"><span>AMHS Linux Lab Workbook&nbsp; •&nbsp; Ubuntu VM Practice</span><span>21</span></div>
+</section>
+
+<!-- 22 DIVIDER LAB 7 -->
+<section class="slide divider" data-title="Lab 7 · Disk &amp; Memory">
+  <div class="dline"></div>
+  <div class="dbox"><div class="dn">7</div><div class="dl">LAB</div></div>
+  <div class="dtitle">Disk &amp; Memory</div>
+  <div class="dcmds">df&nbsp; •&nbsp; du&nbsp; •&nbsp; free&nbsp; •&nbsp; vmstat</div>
+</section>
+
+<!-- 23 LAB 7 EXERCISE -->
+<section class="slide" data-title="Lab 7: Disk &amp; Memory (Exercise)">
+  <div class="lhead"><div class="ltitle">Lab 7: Disk &amp; Memory Monitoring</div><div class="lsub">Check storage space and system resources</div><div class="badge">EXERCISE</div></div>
+  <div class="dash"></div>
+  <div class="lbody">
+    <div class="steps two">
+      <div class="step"><div class="snum">1</div><div class="sbody"><div class="ins">Check disk space on all partitions (human readable)</div><div class="cmd">df -h</div></div></div>
+      <div class="step"><div class="snum">6</div><div class="sbody"><div class="ins">Check memory in gigabytes</div><div class="cmd">free -g</div></div></div>
+      <div class="step"><div class="snum">2</div><div class="sbody"><div class="ins">Check disk space — only show real filesystems</div><div class="cmd">df -hT --type=ext4 --type=xfs</div></div></div>
+      <div class="step"><div class="snum">7</div><div class="sbody"><div class="ins">Check memory including swap</div><div class="cmd">free -m -t</div></div></div>
+      <div class="step"><div class="snum">3</div><div class="sbody"><div class="ins">Check disk usage of your home directory</div><div class="cmd">du -sh ~</div></div></div>
+      <div class="step"><div class="snum">8</div><div class="sbody"><div class="ins">Get a one-time CPU/memory/IO snapshot</div><div class="cmd">vmstat 1 5</div></div></div>
+      <div class="step"><div class="snum">4</div><div class="sbody"><div class="ins">Show the 5 largest items in your home directory</div><div class="cmd">du -sh ~/* 2&gt;/dev/null | sort -rh | head -5</div></div></div>
+      <div class="step"><div class="snum">9</div><div class="sbody"><div class="ins">Check disk usage of practice folder</div><div class="cmd">du -sh ~/amhs-practice/</div></div></div>
+      <div class="step"><div class="snum">5</div><div class="sbody"><div class="ins">Check total RAM and how much is free</div><div class="cmd">free -m</div></div></div>
+      <div class="step"><div class="snum">10</div><div class="sbody"><div class="ins">Find files larger than 100KB in home directory</div><div class="cmd">find ~ -size +100k -type f 2&gt;/dev/null</div></div></div>
+    </div>
+    <div class="unote red"><div class="uh">CRITICAL AMHS NOTE</div><p>If <span class="mono">df -h</span> shows a partition at 90%+ used, this is a warning. At 100%, AMHS cannot write logs and will malfunction. Alert your supervisor immediately.</p></div>
+  </div>
+  <div class="lfoot"><span>AMHS Linux Lab Workbook&nbsp; •&nbsp; Ubuntu VM Practice</span><span>23</span></div>
+</section>
+
+<!-- 24 LAB 7 ANSWER -->
+<section class="slide" data-title="Lab 7: Answer Key">
+  <div class="lhead"><div class="ltitle">Lab 7: Answer Key — Disk &amp; Memory Output</div><div class="badge green">ANSWER KEY</div></div>
+  <div class="dash"></div>
+  <div class="lbody">
+    <div class="ans2">
+      <div class="term green"><div class="lbl">Expected Output:</div><pre><span class="pr">$ df -h</span>
+Filesystem  Size  Used  Avail Use%  Mounted on
+/dev/sda1    20G  6.2G   13G   33%  /
+tmpfs       994M     0  994M    0%  /dev/shm
+<span class="pr">$ du -sh ~/amhs-practice/</span>
+40K    /home/student/amhs-practice/
+<span class="pr">$ du -sh ~/* 2&gt;/dev/null | sort -rh | head -5</span>
+100M  /home/student/Downloads
+ 40K  /home/student/amhs-practice
+ 12K  /home/student/.bashrc</pre></div>
+      <div class="term green"><div class="lbl">Expected Output:</div><pre><span class="pr">$ free -m</span>
+        total  used  free  buff/cache  available
+Mem:     1987   512   100        1375        850
+Swap:    2047     0  2047
+<span class="cmt">READING free OUTPUT:
+  Mem used = 512 MB    (programs using RAM)
+  Mem available = 850 MB  (use THIS number)
+  Swap used = 0 MB     (good — swap not needed)</span>
+<span class="pr">$ vmstat 1 5 (partial)</span>
+ r  b   swpd   free   si so bi bo us sy id wa
+ 0  0      0 102400   0  0  1  0  0  0 99  0
+<span class="cmt">Key vmstat columns:
+  r=run queue  si/so=swap  us/sy/id=CPU%  wa=disk wait</span></pre></div>
+    </div>
+  </div>
+  <div class="lfoot"><span>AMHS Linux Lab Workbook&nbsp; •&nbsp; Ubuntu VM Practice</span><span>24</span></div>
+</section>
+
+<!-- 25 DIVIDER LAB 8 -->
+<section class="slide divider" data-title="Lab 8 · File Permissions &amp; Users">
+  <div class="dline"></div>
+  <div class="dbox"><div class="dn">8</div><div class="dl">LAB</div></div>
+  <div class="dtitle">File Permissions &amp; Users</div>
+  <div class="dcmds">ls -l&nbsp; •&nbsp; chmod&nbsp; •&nbsp; chown&nbsp; •&nbsp; id&nbsp; •&nbsp; su&nbsp; •&nbsp; sudo</div>
+</section>
+
+<!-- 26 LAB 8 EXERCISE -->
+<section class="slide" data-title="Lab 8: Permissions &amp; Users (Exercise)">
+  <div class="lhead"><div class="ltitle">Lab 8: Permissions &amp; Users</div><div class="lsub">Read and change file permissions</div><div class="badge">EXERCISE</div></div>
+  <div class="dash"></div>
+  <div class="lbody">
+    <div class="permbar"><b style="color:#fff">How to read permissions:</b>&nbsp; <span class="mono">-rw-r--r--</span> = file type | owner perms | group perms | others perms &nbsp;&nbsp;|&nbsp;&nbsp; <span class="mono">r</span>=read (4) <span class="mono">w</span>=write (2) <span class="mono">x</span>=execute (1) &nbsp;•&nbsp; rwx=7, r-x=5, rw-=6</div>
+    <div class="steps two" style="gap:6px 30px">
+      <div class="step"><div class="snum">1</div><div class="sbody"><div class="ins">Read the full permissions of your practice files</div><div class="cmd">ls -lh ~/amhs-practice/</div></div></div>
+      <div class="step"><div class="snum">6</div><div class="sbody"><div class="ins">Run it now (should work)</div><div class="cmd">~/amhs-practice/test.sh</div></div></div>
+      <div class="step"><div class="snum">2</div><div class="sbody"><div class="ins">Create a test script file</div><div class="cmd">echo '#!/bin/bash\necho hello' &gt; ~/amhs-practice/test.sh</div></div></div>
+      <div class="step"><div class="snum">7</div><div class="sbody"><div class="ins">Set permissions numerically (owner rw, others r)</div><div class="cmd">chmod 644 ~/amhs-practice/message.txt</div></div></div>
+      <div class="step"><div class="snum">3</div><div class="sbody"><div class="ins">Check its permissions</div><div class="cmd">ls -lh ~/amhs-practice/test.sh</div></div></div>
+      <div class="step"><div class="snum">8</div><div class="sbody"><div class="ins">Remove all write permissions from a file</div><div class="cmd">chmod a-w ~/amhs-practice/config/amhs.conf</div></div></div>
+      <div class="step"><div class="snum">4</div><div class="sbody"><div class="ins">Try to run it (should fail — not executable yet)</div><div class="cmd">~/amhs-practice/test.sh</div></div></div>
+      <div class="step"><div class="snum">9</div><div class="sbody"><div class="ins">Try to edit the protected file (should fail)</div><div class="cmd">echo 'test' &gt;&gt; ~/amhs-practice/config/amhs.conf</div></div></div>
+      <div class="step"><div class="snum">5</div><div class="sbody"><div class="ins">Make it executable (add x for owner)</div><div class="cmd">chmod u+x ~/amhs-practice/test.sh</div></div></div>
+      <div class="step"><div class="snum">10</div><div class="sbody"><div class="ins">Restore write permission</div><div class="cmd">chmod u+w ~/amhs-practice/config/amhs.conf</div></div></div>
+    </div>
+  </div>
+  <div class="lfoot"><span>AMHS Linux Lab Workbook&nbsp; •&nbsp; Ubuntu VM Practice</span><span>26</span></div>
+</section>
+
+<!-- 27 LAB 8 ANSWER -->
+<section class="slide" data-title="Lab 8: Answer Key">
+  <div class="lhead"><div class="ltitle">Lab 8: Answer Key — Permissions Output</div><div class="badge green">ANSWER KEY</div></div>
+  <div class="dash"></div>
+  <div class="lbody">
+    <div class="ans2">
+      <div class="term green"><div class="lbl">Expected Output:</div><pre><span class="pr">$ ls -lh ~/amhs-practice/</span>
+total 24K
+drwxrwxr-x 2 student student 4.0K logs/
+-rw-rw-r-- 1 student student   54 message.txt
+-rw-rw-r-- 1 student student  128 config/amhs.conf
+<span class="pr">$ ~/amhs-practice/test.sh  (before chmod)</span>
+-bash: .../test.sh: Permission denied
+<span class="pr">$ chmod u+x test.sh &amp;&amp; ~/amhs-practice/test.sh</span>
+hello
+<span class="pr">$ ls -lh test.sh (after chmod u+x)</span>
+-rwxrw-r-- 1 student student 30 Jan 15 test.sh
+           ^ owner now has x (execute)</pre></div>
+      <div class="term green"><div class="lbl">Expected Output:</div><pre><span class="pr">$ chmod a-w config/amhs.conf</span>
+<span class="pr">$ echo test &gt;&gt; config/amhs.conf</span>
+-bash: config/amhs.conf: Permission denied
+<span class="cmt">chmod numeric quick reference:
+  777 = rwxrwxrwx (everyone — AVOID)
+  755 = rwxr-xr-x (scripts/directories)
+  644 = rw-r--r--  (regular files)
+  640 = rw-r-----  (sensitive config files)
+  600 = rw-------  (private keys, passwords)
+chown command (change ownership):
+  chown user:group filename
+  chown amhs:amhs /etc/amhs/config
+  (requires root/sudo on real server)</span></pre></div>
+    </div>
+  </div>
+  <div class="lfoot"><span>AMHS Linux Lab Workbook&nbsp; •&nbsp; Ubuntu VM Practice</span><span>27</span></div>
+</section>
+
+<!-- 28 DIVIDER LAB 9 -->
+<section class="slide divider" data-title="Lab 9 · Backup &amp; Archive">
+  <div class="dline"></div>
+  <div class="dbox"><div class="dn">9</div><div class="dl">LAB</div></div>
+  <div class="dtitle">Backup &amp; Archive</div>
+  <div class="dcmds">tar&nbsp; •&nbsp; gzip&nbsp; •&nbsp; md5sum&nbsp; •&nbsp; scp</div>
+</section>
+
+<!-- 29 LAB 9 EXERCISE -->
+<section class="slide" data-title="Lab 9: Backup &amp; Archive (Exercise)">
+  <div class="lhead"><div class="ltitle">Lab 9: Backup &amp; Archive</div><div class="lsub">Create, compress, and verify archives</div><div class="badge">EXERCISE</div></div>
+  <div class="dash"></div>
+  <div class="lbody">
+    <div class="steps two" style="gap:6px 30px">
+      <div class="step"><div class="snum">1</div><div class="sbody"><div class="ins">Go to the practice directory</div><div class="cmd">cd ~/amhs-practice</div></div></div>
+      <div class="step"><div class="snum">7</div><div class="sbody"><div class="ins">Verify today's backup file was created</div><div class="cmd">ls -lh backup/</div></div></div>
+      <div class="step"><div class="snum">2</div><div class="sbody"><div class="ins">Create a tar archive of the config folder</div><div class="cmd">tar -cvf backup/config_backup.tar config/</div></div></div>
+      <div class="step"><div class="snum">8</div><div class="sbody"><div class="ins">Generate a checksum for the backup file</div><div class="cmd">md5sum backup/config_$(date +%Y%m%d).tar.gz</div></div></div>
+      <div class="step"><div class="snum">3</div><div class="sbody"><div class="ins">Check what is inside the archive</div><div class="cmd">tar -tvf backup/config_backup.tar</div></div></div>
+      <div class="step"><div class="snum">9</div><div class="sbody"><div class="ins">Save the checksum to a file for later</div><div class="cmd">md5sum backup/config_$(date +%Y%m%d).tar.gz &gt; backup/checksum.md5</div></div></div>
+      <div class="step"><div class="snum">4</div><div class="sbody"><div class="ins">Compress the archive with gzip</div><div class="cmd">gzip backup/config_backup.tar</div></div></div>
+      <div class="step"><div class="snum">10</div><div class="sbody"><div class="ins">Extract the archive to a test folder to verify</div><div class="cmd">mkdir /tmp/restore_test &amp;&amp; tar -xzvf backup/config_$(date +%Y%m%d).tar.gz -C /tmp/restore_test/</div></div></div>
+      <div class="step"><div class="snum">5</div><div class="sbody"><div class="ins">Check the compressed file size</div><div class="cmd">ls -lh backup/</div></div></div>
+      <div class="step"><div class="snum">11</div><div class="sbody"><div class="ins">Verify extracted files look correct</div><div class="cmd">ls -lh /tmp/restore_test/config/</div></div></div>
+      <div class="step"><div class="snum">6</div><div class="sbody"><div class="ins">Create a timestamp-named backup (pro practice)</div><div class="cmd">tar -czvf backup/config_$(date +%Y%m%d).tar.gz config/</div></div></div>
+      <div class="step"><div class="snum">12</div><div class="sbody"><div class="ins">Verify backup integrity using saved checksum</div><div class="cmd">md5sum -c backup/checksum.md5</div></div></div>
+    </div>
+  </div>
+  <div class="lfoot"><span>AMHS Linux Lab Workbook&nbsp; •&nbsp; Ubuntu VM Practice</span><span>29</span></div>
+</section>
+
+<!-- 30 LAB 9 ANSWER -->
+<section class="slide" data-title="Lab 9: Answer Key">
+  <div class="lhead"><div class="ltitle">Lab 9: Answer Key — Backup Output</div><div class="badge green">ANSWER KEY</div></div>
+  <div class="dash"></div>
+  <div class="lbody">
+    <div class="ans2">
+      <div class="term green"><div class="lbl">Expected Output:</div><pre><span class="pr">$ tar -cvf backup/config_backup.tar config/</span>
+config/
+config/amhs.conf
+<span class="pr">$ tar -tvf backup/config_backup.tar</span>
+drwxrwxr-x student/student 0  Jan 15 config/
+-rw-rw-r-- student/student 47 Jan 15 config/amhs.conf
+<span class="pr">$ gzip backup/config_backup.tar</span>
+(creates config_backup.tar.gz, deletes .tar)
+<span class="pr">$ ls -lh backup/</span>
+-rw-rw-r-- 1 student 175 Jan 15 config_backup.tar.gz
+-rw-rw-r-- 1 student 175 Jan 15 config_20240115.tar.gz
+-rw-rw-r-- 1 student  55 Jan 15 checksum.md5</pre></div>
+      <div class="term green"><div class="lbl">Expected Output:</div><pre><span class="pr">$ md5sum backup/config_20240115.tar.gz</span>
+a3f4b2c1d8e9f0a1b2c3d4e5  config_20240115.tar.gz
+<span class="pr">$ md5sum -c backup/checksum.md5</span>
+config_20240115.tar.gz: OK
+<span class="cmt">'OK' = file matches checksum. File is intact.
+'FAILED' = file is corrupted or changed.</span>
+Restore test result:
+<span class="pr">$ ls -lh /tmp/restore_test/config/</span>
+-rw-rw-r-- 1 student 47 Jan 15 amhs.conf
+<span class="cmt">Complete backup workflow:
+1. Backup → 2. md5sum → 3. Restore test → 4. Store
+Skip any step = your backup might fail when needed!</span></pre></div>
+    </div>
+  </div>
+  <div class="lfoot"><span>AMHS Linux Lab Workbook&nbsp; •&nbsp; Ubuntu VM Practice</span><span>30</span></div>
+</section>
+
+<!-- 31 QUICK REFERENCE -->
+<section class="slide" data-title="Quick Reference: All Commands">
+  <div class="lhead"><div class="ltitle">Quick Reference: All Commands at a Glance</div><div class="lsub">Keep this slide handy while practicing</div></div>
+  <div class="dash"></div>
+  <div class="lbody">
+    <div class="qref">
+      <div class="qcard"><h4>System Info</h4><code>uname -a</code><code>lsb_release -a</code><code>hostname</code><code>uptime</code><code>date</code><code>who</code><code>id</code></div>
+      <div class="qcard gray"><h4>Files &amp; Navigation</h4><code>pwd</code><code>ls -lh / ls -lt</code><code>cd &lt;dir&gt;</code><code>mkdir &lt;dir&gt;</code><code>cp src dest</code><code>mv src dest</code><code>rm file</code></div>
+      <div class="qcard green"><h4>Reading Logs</h4><code>cat file</code><code>less file</code><code>head -n file</code><code>tail -n file</code><code>grep PAT file</code><code>grep -i -c -B -A</code><code>tail -f file</code></div>
+      <div class="qcard amber"><h4>Processes</h4><code>ps -ef</code><code>ps -ef | grep X</code><code>top</code><code>top -bn1</code><code>kill &lt;PID&gt;</code><code>ps -u $USER</code><code>wc -l</code></div>
+      <div class="qcard"><h4>Services (Ubuntu)</h4><code>systemctl status X</code><code>systemctl start X</code><code>systemctl stop X</code><code>systemctl restart X</code><code>systemctl enable X</code><code>systemctl list-units</code><code class="dim">(RHEL: service X cmd)</code></div>
+      <div class="qcard gray"><h4>Network</h4><code>ip addr show</code><code>hostname -I</code><code>ping -c 4 &lt;ip&gt;</code><code>ip route show</code><code>ss -tlnp</code><code>netstat -tlnp</code><code>telnet &lt;ip&gt; &lt;port&gt;</code></div>
+      <div class="qcard green"><h4>Disk &amp; Memory</h4><code>df -h</code><code>du -sh &lt;dir&gt;</code><code>free -m</code><code>vmstat 1 5</code><code>find ~ -size +100k</code><code>sort -rh</code></div>
+      <div class="qcard amber"><h4>Backup</h4><code>tar -cvf arc.tar dir/</code><code>tar -czvf arc.tar.gz dir/</code><code>tar -tvf arc.tar</code><code>tar -xzvf arc.tar.gz</code><code>gzip file.tar</code><code>md5sum file</code><code>md5sum -c file.md5</code></div>
+    </div>
+  </div>
+  <div class="lfoot"><span>AMHS Linux Lab Workbook&nbsp; •&nbsp; Ubuntu VM Practice</span><span>31</span></div>
+</section>
+
+<!-- 32 COMPLETE -->
+<section class="slide complete" data-title="Lab Complete — Well Done!">
+  <div class="td"></div>
+  <div class="eyebrow">LAB COMPLETE</div>
+  <h1>Well Done!</h1>
+  <div class="cul"></div>
+  <div class="cols">
+    <div class="ci"><span class="ck">✓</span><span>Check system status with uname, hostname, uptime</span></div>
+    <div class="ci"><span class="ck">✓</span><span>Diagnose network issues with ping, ip, ss, and telnet</span></div>
+    <div class="ci"><span class="ck">✓</span><span>Navigate the Linux filesystem with confidence</span></div>
+    <div class="ci"><span class="ck">✓</span><span>Monitor disk and memory with df, free, and vmstat</span></div>
+    <div class="ci"><span class="ck">✓</span><span>Read and search log files using cat, less, tail, and grep</span></div>
+    <div class="ci"><span class="ck">✓</span><span>Set file permissions with chmod</span></div>
+    <div class="ci"><span class="ck">✓</span><span>Monitor processes with ps and top</span></div>
+    <div class="ci"><span class="ck">✓</span><span>Create and verify backups with tar and md5sum</span></div>
+    <div class="ci"><span class="ck">✓</span><span>Start and stop services (Ubuntu: systemctl / RHEL: service)</span></div>
+  </div>
+  <div class="foot">You are ready to monitor and support the AMHS server!</div>
+  <div class="bd"></div>
+
+  </section>
+
+
+</div></div>
+<div class="hint" id="hint">Use ← → arrows · press <b>G</b> for grid</div>
+<div id="sidenav">
+  <a class="side-link side-prev" href="AMHS_Module-2_Linux.html" title="Previous: Module 2 – Linux for AMHS"><span class="si">↑</span><span class="sl">Module 2</span></a>
+  <a class="side-link side-next" href="AMHS_Module-3_User_Agent.html" title="Next: Module 3 – User Agent Training"><span class="si">↓</span><span class="sl">Module 3</span></a>
+</div>
+<div id="bar">
+  <div class="title" id="curtitle"></div>
+  <a class="btn wide idxlink" href="index.html" title="Back to Home">⌂ Home</a>
+  <button class="btn" id="first" title="First slide (Home)">⤒</button>
+  <button class="btn" id="prev" title="Previous (←)">‹</button>
+  <span id="count">1 / 32</span>
+  <button class="btn" id="next" title="Next (→)">›</button>
+  <button class="btn wide" id="grid" title="Overview (G)">▦ Grid</button>
+  <button class="btn" id="fs" title="Fullscreen (F)">⛶</button>
+</div>
+<div id="ov"><button class="btn close" id="ovclose">✕</button><h2>AMHS Lab Workbook — All Slides</h2><div class="ovgrid" id="ovgrid"></div></div>
+<script>
+const slides=[...document.querySelectorAll('.slide')];
+const titles=slides.map(s=>s.dataset.title||'');
+let i=0; const N=slides.length;
+const count=document.getElementById('count'), prog=document.getElementById('prog'), curtitle=document.getElementById('curtitle');
+function show(n){ i=Math.max(0,Math.min(N-1,n));
+  slides.forEach((s,k)=>s.classList.toggle('active',k===i));
+  count.textContent=(i+1)+' / '+N; prog.style.width=((i+1)/N*100)+'%';
+  curtitle.innerHTML='<b>'+(i+1).toString().padStart(2,'0')+'</b>'+titles[i];}
+document.getElementById('next').onclick=()=>show(i+1);
+document.getElementById('prev').onclick=()=>show(i-1);
+document.getElementById('first').onclick=()=>show(0);
+document.addEventListener('keydown',e=>{
+  if(document.getElementById('ov').classList.contains('open')){ if(e.key==='Escape')closeOv(); return;}
+  if(e.key==='ArrowRight'||e.key==='PageDown'||e.key===' ')(e.preventDefault(),show(i+1));
+  else if(e.key==='ArrowLeft'||e.key==='PageUp')(e.preventDefault(),show(i-1));
+  else if(e.key==='Home')show(0); else if(e.key==='End')show(N-1);
+  else if(e.key.toLowerCase()==='g')openOv(); else if(e.key.toLowerCase()==='f')toggleFs();});
+function toggleFs(){ if(!document.fullscreenElement)document.documentElement.requestFullscreen?.(); else document.exitFullscreen?.(); }
+document.getElementById('fs').onclick=toggleFs;
+const ov=document.getElementById('ov'), ovgrid=document.getElementById('ovgrid');
+titles.forEach((t,k)=>{ const c=document.createElement('div'); c.className='ovcard';
+  c.innerHTML='<div class="n">'+(k+1).toString().padStart(2,'0')+'</div><div class="t">'+t+'</div>';
+  c.onclick=()=>{show(k);closeOv();}; ovgrid.appendChild(c);});
+function openOv(){ov.classList.add('open');} function closeOv(){ov.classList.remove('open');}
+document.getElementById('grid').onclick=openOv; document.getElementById('ovclose').onclick=closeOv;
+const scaler=document.getElementById('scaler'), stage=document.getElementById('stage');
+function fit(){ const w=stage.clientWidth-24, h=stage.clientHeight-24; scaler.style.transform='scale('+Math.min(w/1000,h/562.5)+')';}
+window.addEventListener('resize',fit);
+let tx=0; stage.addEventListener('touchstart',e=>tx=e.touches[0].clientX,{passive:true});
+stage.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx; if(Math.abs(dx)>50)show(i+(dx<0?1:-1));},{passive:true});
+setTimeout(()=>{document.getElementById('hint').style.opacity='0';},4200);
+fit(); show(0);
+</script>
+</body>
+</html>
