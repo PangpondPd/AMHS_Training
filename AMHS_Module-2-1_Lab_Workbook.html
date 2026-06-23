@@ -33,7 +33,7 @@ body{ background:#0c1a28; font-family:'Inter',system-ui,sans-serif; color:var(--
 
 /* content-slide chrome */
 .lhead{ position:relative; padding:18px 38px 0;}
-.ltitle{ font-family:'Manrope',sans-serif; font-weight:800; color:#fff; font-size:30px; letter-spacing:-.01em;}
+.ltitle{ font-family:'Manrope',sans-serif; font-weight:800; color:#fff; font-size:30px; letter-spacing:-.01em; padding-right:185px;}
 .lsub{ font-style:italic; color:var(--teal); font-size:14.5px; margin-top:6px;}
 .badge{ position:absolute; top:22px; right:34px; min-width:160px; text-align:center; padding:11px 22px; border-radius:8px; background:var(--teal); color:#06283a; font-family:'Manrope',sans-serif; font-weight:800; font-size:13px; letter-spacing:.06em; box-shadow:var(--shadow);}
 .badge.green{ background:var(--green); color:#04241a;}
@@ -89,7 +89,10 @@ body{ background:#0c1a28; font-family:'Inter',system-ui,sans-serif; color:var(--
 .term.green .pr{ color:#5fd6a6;}
 
 /* answer layout: terminal(s) + side note */
-.ans2{ display:grid; grid-template-columns:1fr 1fr; gap:18px; height:100%;}
+.ans2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; height:100%; align-content:start; grid-auto-rows:min-content;}
+.ans2 .term{ height:auto; max-height:300px; padding:10px 14px;}
+.ans2 .term pre{ font-size:10px; line-height:1.28;}
+.ans2 .term .lbl{ margin-bottom:4px;}
 .ans-note{ border:1.5px solid var(--green-line); border-radius:8px; padding:12px 14px; background:rgba(39,171,142,.06); align-self:start;}
 .ans-note .nh{ color:var(--green); font-family:'Manrope',sans-serif; font-weight:700; font-size:12px; margin-bottom:6px;}
 .ans-note p{ font-size:12px; color:var(--body); line-height:1.4;}
@@ -215,12 +218,109 @@ body{ background:#0c1a28; font-family:'Inter',system-ui,sans-serif; color:var(--
 .side-link .sl{ writing-mode:vertical-rl; text-orientation:mixed; letter-spacing:.03em; white-space:nowrap;}
 .side-prev{ border-bottom:1px solid rgba(255,255,255,.08);}
 @media (max-width:560px){ #sidenav{ width:44px;} .side-link .sl{ font-size:10px;} .side-link .si{ font-size:15px;} }
+
+/* Lab 5: two-column service-command layout (Ubuntu vs RHEL) */
+.svc2{ display:flex; gap:22px; margin-top:2px; align-items:flex-start;}
+.svccol{ flex:1 1 0; width:0; min-width:0; box-sizing:border-box;}
+.svch{ font-family:'Manrope',sans-serif; font-weight:800; font-size:12px; letter-spacing:.02em;
+  color:#fff; padding:5px 12px; border-radius:6px; margin-bottom:6px;}
+.svch span{ font-weight:600; font-size:10.5px; opacity:.85;}
+.svch-ub{ background:var(--teal);}
+.svch-rh{ background:#6b7785;}
+.lstep{ display:grid; grid-template-columns:18px 1fr; gap:1px 8px; align-items:center; margin-bottom:2px;}
+.lstep .ln{ grid-row:1 / span 2; width:18px; height:18px; border-radius:50%; background:var(--teal);
+  color:#06283a; font-family:'Manrope',sans-serif; font-weight:700; font-size:10px;
+  display:flex; align-items:center; justify-content:center;}
+.svccol:nth-child(2) .lstep .ln{ background:#8893a0;}
+.lstep .li{ color:var(--body); font-size:10.5px; line-height:1.12; min-width:0; overflow-wrap:anywhere; margin-top:1px;}
+.lstep .lc{ grid-column:2; font-family:'DM Mono',monospace; font-size:9.5px; color:var(--cmd);
+  background:var(--chip); border:1px solid var(--chip-bd); border-radius:4px; padding:2px 8px;
+  margin-top:0; overflow-wrap:anywhere; word-break:break-word; display:block; max-width:100%; line-height:1.4;}
+
+
+/* Lab 5 dense slide: reclaim vertical space */
+.svc-slide .lhead{ padding-top:14px;}
+.svc-slide .dash{ margin-top:7px;}
+.svc-slide .lbody{ padding-top:9px; height:calc(562.5px - 104px);}
+.svc-slide .lsub{ margin-top:3px;}
+
+/* full-content answer-key slides */
+.ans-slide .lhead{ padding-top:14px;}
+.ans-slide .dash{ margin-top:7px;}
+.ans-slide .lbody{ padding-top:9px; height:calc(562.5px - 104px);}
+.ans-slide .lsub{ margin-top:3px;}
+.ans2.ansfull{ display:flex; gap:14px; align-items:stretch;}
+.ans2.ansfull > .term{ flex:1 1 0; width:0; min-width:0;}
+.ans2.ansfull .term{ max-height:none; height:100%; padding:9px 12px; overflow:hidden;}
+.ans2.ansfull .term .lbl{ margin-bottom:4px; font-size:10px;}
+.ans2.ansfull .term pre{ font-size:9px; line-height:1.32; white-space:pre-wrap; word-break:break-word;}
+
+/* completion slide: intro line + wrapping foot */
+.complete .cintro{ position:absolute; left:0; right:0; top:212px; text-align:center;
+  color:#cdd9e4; font-size:15.5px;}
+.complete .cul{ top:244px;}
+.complete .cols{ top:274px; gap:14px 50px;}
+.complete .ci{ font-size:13.5px; line-height:1.3;}
+.complete .ci b{ color:#fff; font-weight:700;}
+.complete .foot{ left:90px; right:90px; bottom:48px; font-size:13.5px; line-height:1.4;}
+.log18-slide .lhead{ padding-top:12px;}
+.log18-slide .dash{ margin-top:6px;}
+.log18-slide .lbody{ padding-top:6px; height:calc(562.5px - 96px);}
+.log18-slide .note-intro{ margin-bottom:6px; font-size:12px;}
+.log18-slide .term{ max-height:none; height:100%;}
+.log18-slide .term pre{ font-size:8.5px !important; line-height:1.2 !important;}
+
+/* ---- Slide 3 scoped: terminal font to fit all lines ---- */
+.s3-slide .lbody{ padding-top:6px; height:calc(562.5px - 96px);}
+.s3-slide .term pre{ font-size:10.5px !important; line-height:1.3 !important;}
+.s3-slide .note-intro{ margin-bottom:6px; font-size:12.5px;}
+
+/* ---- Dense exercise slides: 2-column step layout ---- */
+.ex2col{ display:flex; gap:18px; align-items:flex-start; margin-top:4px;}
+.excol{ flex:1 1 0; width:0; min-width:0;}
+.exsteps{ gap:3px !important;}
+.ex-dense .lbody{ padding-top:5px; height:calc(562.5px - 96px);}
+.ex-dense .lhead{ padding-top:12px;}
+.ex-dense .dash{ margin-top:5px;}
+.ex-dense .epill{ margin-bottom:4px; padding:3px 12px;}
+.ex-dense .ins{ font-size:11.5px !important; line-height:1.15 !important;}
+.ex-dense .cmd{ font-size:10.5px !important; padding:2px 10px !important; margin-top:0 !important;}
+.ex-dense .snum{ width:18px; height:18px; font-size:10px;}
+.ex-dense .step{ gap:6px !important;}
+
+/* install note box and inline note for slides 21 & 30 */
+.exinstall{ background:rgba(233,161,0,.09); border:1px solid var(--amber); border-left:4px solid var(--amber);
+  border-radius:5px; padding:6px 12px; font-size:11.5px; margin-bottom:6px; line-height:1.4;}
+.exinstall strong{ color:var(--amber); font-family:'Manrope',sans-serif;}
+.ex-placeholder{ background:transparent; border-color:transparent; visibility:hidden; padding:6px 12px;}
+.uninote{ background:rgba(233,161,0,.06); border:1px solid var(--amber); border-left:4px solid var(--amber);
+  border-radius:5px; padding:6px 12px; font-size:11px; margin-top:5px; line-height:1.4;}
+.uninote strong{ color:var(--amber); font-family:'Manrope',sans-serif;}
+.uninote code{ font-family:'DM Mono',monospace; font-size:10px; color:var(--cmd);}
+
+/* permission summary bar (slide 27) */
+.experm{ background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.1);
+  border-radius:5px; padding:5px 14px; font-size:11.5px; color:#cfe0ea;
+  margin-bottom:6px; line-height:1.5;}
+.experm code{ font-family:'DM Mono',monospace; font-size:11px; color:var(--teal);}
+.experm strong{ color:#fff; font-family:'Manrope',sans-serif;}
+
+/* slide 33: "Keep practicing" line below sentence */
+.foot-line{ position:absolute; left:90px; right:90px; bottom:88px;
+  height:2px; background:var(--teal); opacity:0.5;}
+.complete .foot{ bottom:56px; }
+.complete .bd{ bottom:44px; height:5px;}
+
+/* ---- Slide 4,7,10,13,16,19,22,25,28,31: slightly bigger term font ---- */
+.log18-slide .term pre{ font-size:10px !important; line-height:1.26 !important;}
+.ans-slide .ans2.ansfull .term pre{ font-size:10.5px !important; line-height:1.34 !important;}
 </style>
 </head>
 <body>
 <div id="prog"></div>
 <div id="stage"><div id="scaler">
 <!-- 1 TITLE -->
+
 <section class="slide cover" data-title="Title — Linux Commands Workbook">
 <div class="checker"></div>
   <div class="eyebrow">HANDS-ON LAB</div>
@@ -228,10 +328,9 @@ body{ background:#0c1a28; font-family:'Inter',system-ui,sans-serif; color:var(--
   <div class="ci">For AMHS Systems — Ubuntu VM Practice Edition</div>
   <div class="cul"></div>
   <div class="csub">Step-by-step exercises with answer key&nbsp; •&nbsp; All practice on safe VM environment</div>
-  <div class="botdash"></div>
+
 </section>
 
-<!-- 2 HOW TO USE -->
 <section class="slide" data-title="How to Use This Workbook">
   <div class="lhead"><div class="ltitle">How to Use This Workbook</div></div>
   <div class="dash"></div>
@@ -243,92 +342,143 @@ body{ background:#0c1a28; font-family:'Inter',system-ui,sans-serif; color:var(--
       <div class="htcard red"><div class="top"><div class="sq">04</div><div class="lbl">SAFE VM ONLY</div></div><p>All commands are run on your Ubuntu VM. Never run these on the real AMHS server. The VM is your learning sandbox.</p></div>
     </div>
   </div>
-  <div class="lfoot"><span>AMHS Linux Lab Workbook&nbsp; •&nbsp; Ubuntu VM Practice</span><span>2</span></div>
+  <div class="lfoot"><span></span><span>2</span></div>
 </section>
 
-<!-- 3 LAB 0 SETUP -->
-<section class="slide" data-title="Lab 0: Setup — Practice Environment">
-  <div class="lhead"><div class="ltitle">Lab 0: Setup — Create Your Practice Environment</div><div class="lsub">Run these commands first — sets up all files used in later labs</div><div class="badge">SETUP</div></div>
+<section class="slide s3-slide" data-title="Lab 0: Setup — Directories &amp; Config Files">
+<div class="lhead"><div class="ltitle">Lab 0 Setup — Part 1: Directories &amp; Config Files</div><div class="lsub">Run these commands first before starting Lab 1</div><div class="badge">SETUP 1/2</div></div>
   <div class="dash"></div>
   <div class="lbody">
-    <p class="note-intro">Run this one-time setup in your Ubuntu VM terminal:</p>
-    <div class="term"><pre><span class="cmt"># Create practice directory tree</span>
+    <p class="note-intro">Open a terminal in your Ubuntu VM and run these commands:</p>
+    <div class="term"><pre><span class="cmt"># Step 1: Create the practice directory structure</span>
 <span class="cmd">mkdir -p ~/amhs-practice/logs ~/amhs-practice/backup ~/amhs-practice/config</span>
-<span class="cmt"># Create a fake AMHS config file</span>
-<span class="cmd">echo 'hostname=AMHS-SERVER-01' > ~/amhs-practice/config/amhs.conf</span>
-<span class="cmd">echo 'port=102'              >> ~/amhs-practice/config/amhs.conf</span>
-<span class="cmd">echo 'protocol=X400'        >> ~/amhs-practice/config/amhs.conf</span>
-<span class="cmt"># Create fake log files</span>
-<span class="cmd">for i in 1 2 3; do
-  echo "[INFO]  AMHS service started" > ~/amhs-practice/logs/amhs.log.$i
-  echo "[INFO]  Connection from 192.168.1.$i" >> ~/amhs-practice/logs/amhs.log.$i
-  echo "[ERROR] Timeout on port 102" >> ~/amhs-practice/logs/amhs.log.$i
-  echo "[INFO]  Retry successful"    >> ~/amhs-practice/logs/amhs.log.$i
-done</span>
-<span class="cmt"># Create a text file for practice</span>
-<span class="cmd">echo 'AFTN EGGGZQZX' > ~/amhs-practice/message.txt
-echo 'FF VHHHYNYX'   >> ~/amhs-practice/message.txt
-echo 'END OF MESSAGE' >> ~/amhs-practice/message.txt
-echo 'Setup complete! Run: ls ~/amhs-practice/'</span></pre></div>
+<span class="cmt"># Step 2: Create the AMHS configuration file (8 lines)</span>
+<span class="cmd">cat &gt; ~/amhs-practice/config/amhs.conf &lt;&lt; 'EOF'
+hostname=AMHS-SERVER-01
+port=102
+protocol=X400
+backup_port=103
+max_connections=50
+log_level=INFO
+log_dir=/var/log/amhs
+admin_email=amhs-admin@example.com
+EOF</span>
+<span class="cmt"># Step 3: Create a sample AFTN message file</span>
+<span class="cmd">cat &gt; ~/amhs-practice/message.txt &lt;&lt; 'EOF'
+ZCZC VHHHYNYX
+051234
+FF EGGGZQZX
+051230 VHHHYNYX
+METAR VHHH 051200Z 05015KT 9999 FEW020 27/22 Q1010
+END OF MESSAGE
+NNNN
+EOF</span>
+<span class="cmt"># Verify: check that files were created</span>
+<span class="cmd">ls -lh ~/amhs-practice/config/</span></pre></div>
   </div>
-  <div class="lfoot"><span>AMHS Linux Lab Workbook&nbsp; •&nbsp; Ubuntu VM Practice</span><span>3</span></div>
+  <div class="lfoot"><span></span><span>3</span></div>
 </section>
 
-<!-- 4 DIVIDER LAB 1 -->
+<section class="slide log18-slide" data-title="Lab 0: Setup — Log Files &amp; Practice Data">
+<div class="lhead"><div class="ltitle">Lab 0 Setup — Part 2: Logs &amp; Data</div><div class="lsub">Continue immediately after Part 1 — same terminal session</div><div class="badge">SETUP 2/2</div></div>
+  <div class="dash"></div>
+  <div class="lbody">
+    <p class="note-intro">Copy and run this entire block (it creates 3 log files with 18 lines each):</p>
+    <div class="term"><pre><span class="cmt"># Create 3 realistic log files — 18 lines each</span>
+<span class="cmd">for n in 1 2 3; do
+  F=~/amhs-practice/logs/amhs.log.$n
+  D="2024-01-1$n"; IP="192.168.1.1$n"
+  (echo "[$D 06:00] [INFO]  AMHS service started"
+   echo "[$D 06:01] [INFO]  X.400 protocol ready on port 102"
+   echo "[$D 06:02] [INFO]  Network interface eth0 ready"
+   echo "[$D 06:03] [INFO]  Config loaded from /etc/amhs/amhs.conf"
+   echo "[$D 06:04] [INFO]  Waiting for incoming connections"
+   echo "[$D 06:15] [INFO]  Connection from $IP accepted"
+   echo "[$D 06:16] [INFO]  Message received: AFTN EGGGZQZX"
+   echo "[$D 06:30] [WARN]  High message queue: 45 pending"
+   echo "[$D 06:45] [ERROR] Timeout on port 102 from $IP"
+   echo "[$D 06:46] [INFO]  Retrying connection to $IP"
+   echo "[$D 06:47] [INFO]  Retry successful - reconnected"
+   echo "[$D 07:00] [INFO]  Daily stats: 1${n}0 messages processed"
+   echo "[$D 07:15] [ERROR] Invalid X.400 message from 192.168.1.2$n"
+   echo "[$D 07:16] [INFO]  Message rejected and quarantined"
+   echo "[$D 07:30] [WARN]  Memory usage at 82 percent"
+   echo "[$D 07:31] [INFO]  Garbage collection initiated"
+   echo "[$D 07:45] [INFO]  Backup completed successfully"
+   echo "[$D 07:46] [INFO]  Health check: all services OK") &gt; $F
+done</span>
+<span class="cmt"># Create a 200 KB file — used in Lab 7 disk exercises</span>
+<span class="cmd">dd if=/dev/urandom bs=1K count=200 2&gt;/dev/null | base64 \
+  &gt; ~/amhs-practice/backup/sample_data.b64</span>
+<span class="cmt"># Verify: check line counts (should show 18 for each file)</span>
+<span class="cmd">echo 'Setup complete!'; wc -l ~/amhs-practice/logs/amhs.log.*</span></pre></div>
+  </div>
+  <div class="lfoot"><span></span><span>4</span></div>
+</section>
+
 <section class="slide divider" data-title="Lab 1 · System Information">
   <div class="dline"></div>
   <div class="dbox"><div class="dn">1</div><div class="dl">LAB</div></div>
   <div class="dtitle">System Information</div>
-  <div class="dcmds">uname&nbsp; •&nbsp; hostname&nbsp; •&nbsp; uptime&nbsp; •&nbsp; date&nbsp; •&nbsp; who&nbsp; •&nbsp; id</div>
+  <div class="dcmds">uname&nbsp; •&nbsp; lsb_release&nbsp; •&nbsp; hostname&nbsp; •&nbsp; uptime&nbsp; •&nbsp; date&nbsp; •&nbsp; who&nbsp; •&nbsp; id</div>
 </section>
 
-<!-- 5 LAB 1 EXERCISE -->
 <section class="slide" data-title="Lab 1: System Information (Exercise)">
-  <div class="lhead"><div class="ltitle">Lab 1: System Information</div><div class="lsub">Check the state of your Ubuntu VM</div><div class="badge">EXERCISE</div></div>
+<div class="lhead"><div class="ltitle">Lab 1: System Information</div><div class="lsub">Check the state of your Ubuntu VM</div><div class="badge">EXERCISE</div></div>
   <div class="dash"></div>
   <div class="lbody">
     <span class="epill">EXERCISE</span>
     <p class="note-intro" style="margin-bottom:9px">Follow these steps in order:</p>
     <div class="steps inline">
-      <div class="step"><div class="snum">1</div><div class="sbody"><div class="ins">Find out which Linux version is running:</div><div class="cmd">uname -a</div></div></div>
+      <div class="step"><div class="snum">1</div><div class="sbody"><div class="ins">Find which Linux kernel is running:</div><div class="cmd">uname -a</div></div></div>
       <div class="step"><div class="snum">2</div><div class="sbody"><div class="ins">Check OS details (Ubuntu-specific):</div><div class="cmd">lsb_release -a</div></div></div>
       <div class="step"><div class="snum">3</div><div class="sbody"><div class="ins">Print the hostname of this machine:</div><div class="cmd">hostname</div></div></div>
       <div class="step"><div class="snum">4</div><div class="sbody"><div class="ins">See how long the VM has been running:</div><div class="cmd">uptime</div></div></div>
       <div class="step"><div class="snum">5</div><div class="sbody"><div class="ins">Check the current date and time:</div><div class="cmd">date</div></div></div>
       <div class="step"><div class="snum">6</div><div class="sbody"><div class="ins">See who is currently logged in:</div><div class="cmd">who</div></div></div>
       <div class="step"><div class="snum">7</div><div class="sbody"><div class="ins">See your own user info and groups:</div><div class="cmd">id</div></div></div>
-      <!--<div class="step"><div class="snum">8</div><div class="sbody"><div class="ins">Check environment variables:</div><div class="cmd">env | head -20</div></div></div>-->
     </div>
-    <div class="unote"><div class="uh">UBUNTU NOTE</div><p>Ubuntu uses <span class="mono">lsb_release -a</span> instead of <span class="mono">cat /etc/redhat-release</span>. Both give OS version — just different syntax for different Linux families.</p></div>
+    <div class="unote"><div class="uh">UBUNTU NOTE</div><p>Ubuntu uses <span class="mono">lsb_release -a</span> to check the OS version. On the real AMHS server (RHEL 5.5) you would use: <span class="mono">cat /etc/redhat-release</span></p></div>
   </div>
-  <div class="lfoot"><span>AMHS Linux Lab Workbook&nbsp; •&nbsp; Ubuntu VM Practice</span><span>5</span></div>
+  <div class="lfoot"><span></span><span>6</span></div>
 </section>
 
-<!-- 6 LAB 1 ANSWER -->
-<section class="slide" data-title="Lab 1: Answer Key">
-  <div class="lhead"><div class="ltitle">Lab 1: Answer Key — Expected Output</div><div class="lsub">Your output will differ slightly — that is normal</div><div class="badge green">ANSWER KEY</div></div>
+<section class="slide ans-slide" data-title="Lab 1: Answer Key">
+<div class="lhead"><div class="ltitle">Lab 1: Answer Key — Expected Output</div><div class="lsub">Your output will differ slightly — that is normal</div><div class="badge green">ANSWER KEY</div></div>
   <div class="dash"></div>
   <div class="lbody">
-    <div class="ans2">
+    <div class="ans2 ansfull">
       <div class="term green"><div class="lbl">Expected Output:</div><pre><span class="pr">$ uname -a</span>
-Linux ubuntu-vm 5.15.0-91-generic #101-Ubuntu SMP Tue Nov 14...
+Linux ubuntu-vm 5.15.0-91-generic #101-Ubuntu SMP x86_64 GNU/Linux
 <span class="pr">$ lsb_release -a</span>
-Distributor ID: Ubuntu   Release: 22.04   Codename: jammy
+Distributor ID: Ubuntu
+Description:    Ubuntu 22.04.3 LTS
+Release:        22.04   Codename: jammy
 <span class="pr">$ hostname</span>
 ubuntu-vm   (or whatever name you gave your VM)
 <span class="pr">$ uptime</span>
  09:15:02 up  2:31,  1 user,  load average: 0.05, 0.04, 0.01
-<span class="pr">$ who</span>
+<span class="pr">$ date</span>
+Mon Jan 15 09:15:02 UTC 2024</pre></div>
+      <div class="term green"><div class="lbl">Expected Output:</div><pre><span class="pr">$ who</span>
 student  pts/0  2024-01-15 07:00 (:0)
 <span class="pr">$ id</span>
-uid=1000(student) gid=1000(student) groups=1000(student),4(adm),27(sudo)...</pre></div>
-      <div class="ans-note"><div class="nh">GRADING GUIDE</div><p>Exact versions and names will differ per VM. Key things to check: (1) uname shows 'Linux', (2) lsb_release shows 'Ubuntu', (3) hostname returns a name, (4) uptime shows 'up X days/hours', (5) id shows the student username.</p></div>
+uid=1000(student) gid=1000(student)
+groups=1000(student),4(adm),27(sudo),...
+
+GRADING GUIDE — key things to verify:
+1. uname -a    -&gt; output starts with 'Linux'
+2. lsb_release -&gt; shows 'Ubuntu'
+3. hostname    -&gt; returns a name (any name OK)
+4. uptime      -&gt; shows 'up X days/hours'
+5. date        -&gt; shows current date and time
+6. who         -&gt; shows your username
+7. id          -&gt; shows uid and groups incl 'sudo'</pre></div>
     </div>
   </div>
-  <div class="lfoot"><span>AMHS Linux Lab Workbook&nbsp; •&nbsp; Ubuntu VM Practice</span><span>6</span></div>
+  <div class="lfoot"><span></span><span>7</span></div>
 </section>
 
-<!-- 7 DIVIDER LAB 2 -->
 <section class="slide divider" data-title="Lab 2 · File System Navigation">
   <div class="dline"></div>
   <div class="dbox"><div class="dn">2</div><div class="dl">LAB</div></div>
@@ -336,7 +486,6 @@ uid=1000(student) gid=1000(student) groups=1000(student),4(adm),27(sudo)...</pre
   <div class="dcmds">pwd&nbsp; •&nbsp; ls&nbsp; •&nbsp; cd&nbsp; •&nbsp; mkdir&nbsp; •&nbsp; cp&nbsp; •&nbsp; mv&nbsp; •&nbsp; rm</div>
 </section>
 
-<!-- 8 LAB 2 EXERCISE -->
 <section class="slide" data-title="Lab 2: File System Navigation (Exercise)">
   <div class="lhead"><div class="ltitle">Lab 2: File System Navigation</div><div class="lsub">Navigate directories and manage files</div><div class="badge">EXERCISE</div></div>
   <div class="dash"></div>
@@ -360,184 +509,191 @@ uid=1000(student) gid=1000(student) groups=1000(student),4(adm),27(sudo)...</pre
       <div class="step"><div class="snum">16</div><div class="sbody"><div class="ins">Return to home directory</div><div class="cmd">cd ~</div></div></div>
     </div>
   </div>
-  <div class="lfoot"><span>AMHS Linux Lab Workbook&nbsp; •&nbsp; Ubuntu VM Practice</span><span>8</span></div>
+  <div class="lfoot"><span></span><span>9</span></div>
 </section>
 
-<!-- 9 LAB 2 ANSWER -->
-<section class="slide" data-title="Lab 2: Answer Key">
-  <div class="lhead"><div class="ltitle">Lab 2: Answer Key — Expected Output</div><div class="badge green">ANSWER KEY</div></div>
+<section class="slide ans-slide" data-title="Lab 2: Answer Key">
+<div class="lhead"><div class="ltitle">Lab 2: Answer Key — Expected Output</div><div class="badge green">ANSWER KEY</div></div>
   <div class="dash"></div>
   <div class="lbody">
-    <div class="ans2">
+    <div class="ans2 ansfull">
       <div class="term green"><div class="lbl">Expected Output:</div><pre><span class="pr">$ pwd</span>
 /home/student
 <span class="pr">$ cd ~/amhs-practice &amp;&amp; ls -lh</span>
-total 24K
-drwxrwxr-x 2 student student 4.0K Jan 15 backup/
-drwxrwxr-x 2 student student 4.0K Jan 15 config/
-drwxrwxr-x 2 student student 4.0K Jan 15 logs/
--rw-rw-r-- 1 student student   54 Jan 15 message.txt
-<span class="pr">$ mkdir reports &amp;&amp; cp message.txt reports/ &amp;&amp; ls reports/</span>
-message.txt
-<span class="pr">$ mv message.txt message_orig.txt &amp;&amp; ls -lh</span>
--rw-rw-r-- 1 student student 54 Jan 15 message_orig.txt
+total 4.0K
+drwxrwxr-x 2 student student 4.0K backup/
+drwxrwxr-x 2 student student 4.0K config/
+drwxrwxr-x 2 student student 4.0K logs/
+-rw-rw-r-- 1 student student   93 message.txt
+<span class="pr">$ cd logs &amp;&amp; ls -lt</span>
+-rw-rw-r-- 1 student student 683 Jan 13 amhs.log.3
+-rw-rw-r-- 1 student student 683 Jan 12 amhs.log.2
+-rw-rw-r-- 1 student student 683 Jan 11 amhs.log.1
+(ls -lt shows newest first — amhs.log.3 newest)
+<span class="pr">$ mkdir reports &amp;&amp; cp message.txt reports/</span>
+message.txt</pre></div>
+      <div class="term green"><div class="lbl">Expected Output:</div><pre><span class="pr">$ mv message.txt message_orig.txt &amp;&amp; ls -lh</span>
+-rw-rw-r-- 1 student student 93 message_orig.txt
+(reports/ still here — mv only renamed message.txt)
 <span class="pr">$ rm message_orig.txt &amp;&amp; ls -lh</span>
-(message_orig.txt is gone — only reports/ and other dirs remain)</pre></div>
-      <div class="ans-note"><div class="nh">KEY THINGS TO VERIFY</div>
-        <p><span class="ok">✔</span> ls -lh shows permissions, owner, size, date<br>
-        <span class="ok">✔</span> ls -lt shows newest files at the top<br>
-        <span class="ok">✔</span> cp leaves original, mv does not<br>
-        <span class="ok">✔</span> After rm, the file is completely gone<br>
-        <span class="ok">✔</span> Tab key auto-completes 'rep' to 'reports/'</p>
-        <p style="margin-top:9px"><b style="color:#e88a7e">Common mistakes to watch for:</b><br>
-        <span class="bad">✘</span> Forgetting the trailing / in cp dest<br>
-        <span class="bad">✘</span> Using rm -r on a directory accidentally<br>
-        <span class="bad">✘</span> Confusing cp (copy) with mv (move/rename)</p>
-      </div>
+(message_orig.txt gone — only dirs remain)
+
+NOTE: Some commands produce NO visible output:
+  cd &lt;dir&gt; -&gt; no output = moved successfully
+  mkdir    -&gt; no output = folder created
+  cp       -&gt; no output = file copied
+  mv       -&gt; no output = file moved/renamed
+  rm       -&gt; no output = file deleted
+  Silence means success for these commands.
+Tab key: 'cd rep' + Tab auto-completes to
+'cd reports/' — saves time, avoids typos.</pre></div>
     </div>
   </div>
-  <div class="lfoot"><span>AMHS Linux Lab Workbook&nbsp; •&nbsp; Ubuntu VM Practice</span><span>9</span></div>
+  <div class="lfoot"><span></span><span>10</span></div>
 </section>
 
-<!-- 10 DIVIDER LAB 3 -->
 <section class="slide divider" data-title="Lab 3 · Reading Files &amp; Logs">
   <div class="dline"></div>
   <div class="dbox"><div class="dn">3</div><div class="dl">LAB</div></div>
   <div class="dtitle">Reading Files &amp; Logs</div>
-  <div class="dcmds">cat&nbsp; •&nbsp; less&nbsp; •&nbsp; head&nbsp; •&nbsp; tail&nbsp; •&nbsp; grep&nbsp; •&nbsp; zgrep</div>
+  <div class="dcmds">cat&nbsp; •&nbsp; less&nbsp; •&nbsp; head&nbsp; •&nbsp; tail&nbsp; •&nbsp; grep</div>
 </section>
 
-<!-- 11 LAB 3 EXERCISE -->
 <section class="slide" data-title="Lab 3: Reading Files &amp; Logs (Exercise)">
-  <div class="lhead"><div class="ltitle">Lab 3: Reading Files &amp; Logs</div><div class="lsub">Read, search, and monitor log files</div><div class="badge">EXERCISE</div></div>
+<div class="lhead"><div class="ltitle">Lab 3: Reading Files &amp; Logs</div><div class="lsub">Read, search, and filter log files</div><div class="badge">EXERCISE</div></div>
   <div class="dash"></div>
   <div class="lbody">
-    <div class="steps two">
-      <div class="step"><div class="snum">1</div><div class="sbody"><div class="ins">Read the config file from top to bottom</div><div class="cmd">cat ~/amhs-practice/config/amhs.conf</div></div></div>
-      <div class="step"><div class="snum">6</div><div class="sbody"><div class="ins">Search case-insensitively (error, Error, ERROR)</div><div class="cmd">grep -i error ~/amhs-practice/logs/amhs.log.*</div></div></div>
-      <div class="step"><div class="snum">2</div><div class="sbody"><div class="ins">View a log file page by page (press q to quit)</div><div class="cmd">less ~/amhs-practice/logs/amhs.log.1</div></div></div>
-      <div class="step"><div class="snum">7</div><div class="sbody"><div class="ins">Count how many ERROR lines exist</div><div class="cmd">grep -c ERROR ~/amhs-practice/logs/amhs.log.*</div></div></div>
-      <div class="step"><div class="snum">3</div><div class="sbody"><div class="ins">Show only the first 5 lines of a log</div><div class="cmd">head -5 ~/amhs-practice/logs/amhs.log.1</div></div></div>
-      <div class="step"><div class="snum">8</div><div class="sbody"><div class="ins">Show 1 line before and after each ERROR</div><div class="cmd">grep -B1 -A1 ERROR ~/amhs-practice/logs/amhs.log.1</div></div></div>
-      <div class="step"><div class="snum">4</div><div class="sbody"><div class="ins">Show only the last 5 lines of a log</div><div class="cmd">tail -5 ~/amhs-practice/logs/amhs.log.1</div></div></div>
-      <div class="step"><div class="snum">9</div><div class="sbody"><div class="ins">Search for multiple keywords (ERROR or Timeout)</div><div class="cmd">grep -E 'ERROR|Timeout' ~/amhs-practice/logs/amhs.log.*</div></div></div>
-      <div class="step"><div class="snum">5</div><div class="sbody"><div class="ins">Search for all ERROR lines in all log files</div><div class="cmd">grep ERROR ~/amhs-practice/logs/amhs.log.*</div></div></div>
-      <div class="step"><div class="snum">10</div><div class="sbody"><div class="ins">Simulate live log watching (Ctrl+C to stop)</div><div class="cmd">tail -f ~/amhs-practice/logs/amhs.log.1</div></div></div>
+    <span class="epill">EXERCISE</span>
+    <div class="steps inline">
+      <div class="step"><div class="snum">1</div><div class="sbody"><div class="ins">Read the config file from top to bottom:</div><div class="cmd">cat ~/amhs-practice/config/amhs.conf</div></div></div>
+      <div class="step"><div class="snum">2</div><div class="sbody"><div class="ins">View a log file page by page (q to quit, space for next):</div><div class="cmd">less ~/amhs-practice/logs/amhs.log.1</div></div></div>
+      <div class="step"><div class="snum">3</div><div class="sbody"><div class="ins">Show only the FIRST 5 lines of the log:</div><div class="cmd">head -5 ~/amhs-practice/logs/amhs.log.1</div></div></div>
+      <div class="step"><div class="snum">4</div><div class="sbody"><div class="ins">Show only the LAST 5 lines of the log:</div><div class="cmd">tail -5 ~/amhs-practice/logs/amhs.log.1</div></div></div>
+      <div class="step"><div class="snum">5</div><div class="sbody"><div class="ins">Search for all ERROR lines across all log files:</div><div class="cmd">grep ERROR ~/amhs-practice/logs/amhs.log.*</div></div></div>
+      <div class="step"><div class="snum">6</div><div class="sbody"><div class="ins">Count how many ERROR lines exist per file:</div><div class="cmd">grep -c ERROR ~/amhs-practice/logs/amhs.log.*</div></div></div>
+      <div class="step"><div class="snum">7</div><div class="sbody"><div class="ins">Show 1 line of context before and after each ERROR:</div><div class="cmd">grep -B1 -A1 ERROR ~/amhs-practice/logs/amhs.log.1</div></div></div>
+      <div class="step"><div class="snum">8</div><div class="sbody"><div class="ins">Search for two keywords at once (ERROR or Timeout):</div><div class="cmd">grep -E 'ERROR|Timeout' ~/amhs-practice/logs/amhs.log.1</div></div></div>
     </div>
+    <div class="unote"><div class="uh">AMHS REAL-WORLD NOTE</div><p>In AMHS operations, <span class="mono">grep ERROR /var/log/amhs/*.log</span> is often the first command used when investigating a problem. Knowing which file, which time, and which error code narrows down the issue fast.</p></div>
   </div>
-  <div class="lfoot"><span>AMHS Linux Lab Workbook&nbsp; •&nbsp; Ubuntu VM Practice</span><span>11</span></div>
+  <div class="lfoot"><span></span><span>12</span></div>
 </section>
 
-<!-- 12 LAB 3 ANSWER -->
-<section class="slide" data-title="Lab 3: Answer Key">
-  <div class="lhead"><div class="ltitle">Lab 3: Answer Key — Expected Output</div><div class="badge green">ANSWER KEY</div></div>
+<section class="slide ans-slide" data-title="Lab 3: Answer Key">
+<div class="lhead"><div class="ltitle">Lab 3: Answer Key — Expected Output</div><div class="lsub">Log files have 18 lines — head and tail show DIFFERENT results</div><div class="badge green">ANSWER KEY</div></div>
   <div class="dash"></div>
   <div class="lbody">
-    <div class="ans2">
+    <div class="ans2 ansfull">
       <div class="term green"><div class="lbl">Expected Output:</div><pre><span class="pr">$ cat ~/amhs-practice/config/amhs.conf</span>
 hostname=AMHS-SERVER-01
 port=102
 protocol=X400
-<span class="pr">$ grep ERROR ~/amhs-practice/logs/amhs.log.*</span>
-amhs.log.1:[ERROR] Timeout on port 102
-amhs.log.2:[ERROR] Timeout on port 102
-amhs.log.3:[ERROR] Timeout on port 102
-<span class="pr">$ grep -c ERROR ~/amhs-practice/logs/amhs.log.*</span>
-amhs.log.1:1
-amhs.log.2:1
-amhs.log.3:1
-<span class="pr">$ grep -B1 -A1 ERROR ~/amhs-practice/logs/amhs.log.1</span>
-[INFO]  Connection from 192.168.1.1
-[ERROR] Timeout on port 102
-[INFO]  Retry successful</pre></div>
-      <div class="term green"><div class="lbl">Expected Output:</div><pre><span class="pr">$ head -5 ~/amhs-practice/logs/amhs.log.1</span>
-[INFO]  AMHS service started
-[INFO]  Connection from 192.168.1.1
-[ERROR] Timeout on port 102
-[INFO]  Retry successful
+backup_port=103
+max_connections=50
+log_level=INFO
+log_dir=/var/log/amhs
+admin_email=amhs-admin@example.com
+<span class="pr">$ head -5 ~/amhs-practice/logs/amhs.log.1</span>
+[2024-01-11 06:00] [INFO]  AMHS service started
+[2024-01-11 06:01] [INFO]  X.400 protocol ready :102
+[2024-01-11 06:02] [INFO]  Network interface eth0 ready
+[2024-01-11 06:03] [INFO]  Config loaded from amhs.conf
+[2024-01-11 06:04] [INFO]  Waiting for connections
 <span class="pr">$ tail -5 ~/amhs-practice/logs/amhs.log.1</span>
-(same — our file only has 4 lines)
+[2024-01-11 07:30] [WARN]  Memory usage at 82 percent
+[2024-01-11 07:31] [INFO]  Garbage collection initiated
+[2024-01-11 07:45] [INFO]  Backup completed successfully
+[2024-01-11 07:46] [INFO]  Health check: all services OK
+head=STARTUP lines. tail=END-OF-DAY lines. DIFFER.</pre></div>
+      <div class="term green"><div class="lbl">Expected Output:</div><pre><span class="pr">$ grep ERROR ~/amhs-practice/logs/amhs.log.*</span>
+amhs.log.1:[2024-01-11 06:45] [ERROR] Timeout on :102
+amhs.log.1:[2024-01-11 07:15] [ERROR] Invalid X.400 msg
+amhs.log.2:[2024-01-12 06:45] [ERROR] Timeout on :102
+amhs.log.3:[2024-01-13 06:45] [ERROR] Timeout on :102
+...(2 ERRORs per file, 6 total across 3 files)
+<span class="pr">$ grep -c ERROR ~/amhs-practice/logs/amhs.log.*</span>
+amhs.log.1:2   amhs.log.2:2   amhs.log.3:2
+<span class="pr">$ grep -B1 -A1 ERROR amhs.log.1 (shortened)</span>
+[2024-01-11 06:30] [WARN]  High msg queue: 45 pending
+[2024-01-11 06:45] [ERROR] Timeout on port 102...
+[2024-01-11 06:46] [INFO]  Retrying connection...
+--
+[2024-01-11 07:15] [ERROR] Invalid X.400 message...
 <span class="pr">$ grep -E 'ERROR|Timeout' amhs.log.1</span>
-[ERROR] Timeout on port 102
-(matches because both ERROR and Timeout are on same line)
-
-<span class="cmt">less navigation keys:</span>
-  Space = next page  |  b = back
-  /keyword = search  |  q = quit
-  G = end of file    |  g = start</pre></div>
+[2024-01-11 06:45] [ERROR] Timeout on port 102...
+[2024-01-11 07:15] [ERROR] Invalid X.400 message...
+(both ERROR lines match — 'Timeout' inside 1st)</pre></div>
     </div>
   </div>
-  <div class="lfoot"><span>AMHS Linux Lab Workbook&nbsp; •&nbsp; Ubuntu VM Practice</span><span>12</span></div>
+  <div class="lfoot"><span></span><span>13</span></div>
 </section>
 
-<!-- 13 DIVIDER LAB 4 -->
 <section class="slide divider" data-title="Lab 4 · Process Monitoring">
   <div class="dline"></div>
   <div class="dbox"><div class="dn">4</div><div class="dl">LAB</div></div>
   <div class="dtitle">Process Monitoring</div>
-  <div class="dcmds">ps&nbsp; •&nbsp; top&nbsp; •&nbsp; kill&nbsp; •&nbsp; grep (process filter)</div>
+  <div class="dcmds">ps&nbsp; •&nbsp; top&nbsp; •&nbsp; wc&nbsp; •&nbsp; grep (process filter)</div>
 </section>
 
-<!-- 14 LAB 4 EXERCISE -->
 <section class="slide" data-title="Lab 4: Process Monitoring (Exercise)">
-  <div class="lhead"><div class="ltitle">Lab 4: Process Monitoring</div><div class="lsub">See what is running on your system</div><div class="badge">EXERCISE</div></div>
+<div class="lhead"><div class="ltitle">Lab 4: Process Monitoring</div><div class="lsub">See what is running on your system</div><div class="badge">EXERCISE</div></div>
   <div class="dash"></div>
   <div class="lbody">
-    <div class="steps two">
-      <div class="step"><div class="snum">1</div><div class="sbody"><div class="ins">Show all running processes with details</div><div class="cmd">ps -ef</div></div></div>
-      <div class="step"><div class="snum">6</div><div class="sbody"><div class="ins">In top: sort by CPU usage</div><div class="cmd plain">(inside top, press P)</div></div></div>
-      <div class="step"><div class="snum">2</div><div class="sbody"><div class="ins">Show processes as a tree (parent → child)</div><div class="cmd">ps -efH | head -30</div></div></div>
-      <div class="step"><div class="snum">7</div><div class="sbody"><div class="ins">In top: sort by Memory usage</div><div class="cmd plain">(inside top, press M)</div></div></div>
-      <div class="step"><div class="snum">3</div><div class="sbody"><div class="ins">Find the SSH service process</div><div class="cmd">ps -ef | grep sshd</div></div></div>
-      <div class="step"><div class="snum">8</div><div class="sbody"><div class="ins">Show a one-time snapshot from top (no interactive)</div><div class="cmd">top -bn1 | head -20</div></div></div>
-      <div class="step"><div class="snum">4</div><div class="sbody"><div class="ins">Find your own processes only</div><div class="cmd">ps -u $USER</div></div></div>
-      <div class="step"><div class="snum">9</div><div class="sbody"><div class="ins">Count total number of running processes</div><div class="cmd">ps -ef | wc -l</div></div></div>
-      <div class="step"><div class="snum">5</div><div class="sbody"><div class="ins">Open the real-time process viewer (q to quit)</div><div class="cmd">top</div></div></div>
-      <div class="step"><div class="snum">10</div><div class="sbody"><div class="ins">Find processes containing the word 'bash'</div><div class="cmd">ps -ef | grep bash</div></div></div>
+    <span class="epill">EXERCISE</span>
+    <div class="steps inline">
+      <div class="step"><div class="snum">1</div><div class="sbody"><div class="ins">Show all running processes with full details:</div><div class="cmd">ps -ef</div></div></div>
+      <div class="step"><div class="snum">2</div><div class="sbody"><div class="ins">Find the SSH service process by name:</div><div class="cmd">ps -ef | grep sshd</div></div></div>
+      <div class="step"><div class="snum">3</div><div class="sbody"><div class="ins">Show only your own user's processes:</div><div class="cmd">ps -u $USER</div></div></div>
+      <div class="step"><div class="snum">4</div><div class="sbody"><div class="ins">Open real-time process viewer (P=CPU, M=Mem, q=quit):</div><div class="cmd">top</div></div></div>
+      <div class="step"><div class="snum">5</div><div class="sbody"><div class="ins">Get a one-time snapshot from top (no interactive mode):</div><div class="cmd">top -bn1 | head -20</div></div></div>
+      <div class="step"><div class="snum">6</div><div class="sbody"><div class="ins">Count total number of running processes:</div><div class="cmd">ps -ef | wc -l</div></div></div>
     </div>
-    <div class="unote"><div class="uh">AMHS REAL-WORLD NOTE</div><p>On the actual AMHS server, you would use: <span class="mono">ps -ef | grep amhs</span>. This shows whether the AMHS process is running. On our VM we use 'sshd' as a stand-in.</p></div>
+    <div class="unote"><div class="uh">AMHS REAL-WORLD NOTE</div><p>On the actual AMHS server: <span class="mono">ps -ef | grep amhs</span> checks whether the AMHS process is running. A missing amhs process means the service has crashed and needs restarting. This is one of the most-used diagnostic commands in AMHS operations.</p></div>
   </div>
-  <div class="lfoot"><span>AMHS Linux Lab Workbook&nbsp; •&nbsp; Ubuntu VM Practice</span><span>14</span></div>
+  <div class="lfoot"><span></span><span>15</span></div>
 </section>
 
-<!-- 15 LAB 4 ANSWER -->
-<section class="slide" data-title="Lab 4: Answer Key">
-  <div class="lhead"><div class="ltitle">Lab 4: Answer Key — Expected Output</div><div class="badge green">ANSWER KEY</div></div>
+<section class="slide ans-slide" data-title="Lab 4: Answer Key">
+<div class="lhead"><div class="ltitle">Lab 4: Answer Key — Expected Output</div><div class="badge green">ANSWER KEY</div></div>
   <div class="dash"></div>
   <div class="lbody">
-    <div class="ans2">
-      <div class="term green"><div class="lbl">Expected Output:</div><pre><span class="pr">$ ps -ef | head -6</span>
-UID     PID  PPID  C  STIME TTY   TIME     CMD
-root      1     0  0  07:00 ?     00:00:01 /sbin/init
-root      2     0  0  07:00 ?     00:00:00 [kthreadd]
-student 1234   956  0  07:05 pts/0 00:00:00 bash
-student 2345  1234  0  09:00 pts/0 00:00:00 ps -ef
+    <div class="ans2 ansfull">
+      <div class="term green"><div class="lbl">Expected Output:</div><pre><span class="pr">$ ps -ef | head -5</span>
+UID     PID  PPID  C STIME TTY   TIME     CMD
+root      1     0  0 07:00 ?     00:00:01 /sbin/init
+root      2     0  0 07:00 ?     00:00:00 [kthreadd]
+student 892   845  0 07:05 pts/0 00:00:00 bash
 <span class="pr">$ ps -ef | grep sshd</span>
-root   876    1  0 07:00 ?   00:00:00 /usr/sbin/sshd -D
-student 2350 1234  0 09:01 pts/0 00:00:00 grep --color=auto sshd
-<span class="cmt">NOTE: The second line (grep itself) always appears.
-Use 'grep -v grep' to hide it:
-  ps -ef | grep sshd | grep -v grep</span></pre></div>
-      <div class="term green"><div class="lbl">Expected Output:</div><pre><span class="cmt">top output (partial):</span>
+root   876   1  0 07:00 ?    00:00:00 /usr/sbin/sshd -D
+student 2350 892 0 09:01 pts/0 grep --color=auto sshd
+NOTE: 2nd line is grep itself. Hide it with:
+  ps -ef | grep sshd | grep -v grep
+<span class="pr">$ ps -u $USER</span>
+UID       PID %CPU %MEM COMMAND
+student   892  0.0  0.1 bash
+student  1234  0.0  0.1 ps -u student
+(Only your own processes are shown)</pre></div>
+      <div class="term green"><div class="lbl">Expected Output:</div><pre><span class="pr">$ top -bn1 | head -20 (partial)</span>
 top - 09:15:02 up 2:31  load average: 0.05, 0.04
 Tasks: 112 total,  1 running, 111 sleeping
-%Cpu(s):  0.3 us, 0.1 sy,  0.0 ni, 99.5 id
-MiB Mem :   1987.9 total,   800.0 free
-  PID USER    %CPU %MEM  COMMAND
- 1234 student  0.3  0.1  top
-  876 root     0.0  0.1  sshd
-<span class="cmt">top keyboard shortcuts:
-  P = sort by CPU   |  M = sort by Memory
-  k = kill process  |  q = quit
-  1 = show each CPU core separately</span>
+%Cpu(s):  0.3 us, 0.1 sy, 99.5 id
+MiB Mem :  1987.9 total,  800.0 free,  512.0 used
+MiB Swap:  2047.9 total, 2047.9 free,    0.0 used
+  PID USER      %CPU  %MEM  COMMAND
+ 1234 student    0.3   0.1  top
+  876 root       0.0   0.1  sshd
+    1 root       0.0   0.2  init
+top interactive keys (while top is running):
+  P = sort by CPU usage (descending)
+  M = sort by Memory usage
+  k = kill a process (enter PID)    q = quit top
 <span class="pr">$ ps -ef | wc -l</span>
-113   (varies by system)</pre></div>
+113   (number varies by system state)</pre></div>
     </div>
   </div>
-  <div class="lfoot"><span>AMHS Linux Lab Workbook&nbsp; •&nbsp; Ubuntu VM Practice</span><span>15</span></div>
+  <div class="lfoot"><span></span><span>16</span></div>
 </section>
 
-<!-- 16 DIVIDER LAB 5 -->
 <section class="slide divider" data-title="Lab 5 · Service Management">
   <div class="dline"></div>
   <div class="dbox"><div class="dn">5</div><div class="dl">LAB</div></div>
@@ -545,378 +701,393 @@ MiB Mem :   1987.9 total,   800.0 free
   <div class="dcmds">systemctl (Ubuntu)&nbsp; •&nbsp; service&nbsp; •&nbsp; chkconfig (RHEL)</div>
 </section>
 
-<!-- 17 LAB 5 EXERCISE (two panels) -->
-<section class="slide" data-title="Lab 5: Service Management (Exercise)">
-  <div class="lhead"><div class="ltitle">Lab 5: Service Management</div><div class="lsub">Start, stop, check, and restart services</div><div class="badge">EXERCISE</div></div>
+<section class="slide svc-slide" data-title="Lab 5: Service Management (Exercise)">
+<div class="lhead"><div class="ltitle">Lab 5: Service Management</div><div class="lsub">Start, stop, check, and restart services</div><div class="badge">EXERCISE</div></div>
   <div class="dash"></div>
   <div class="lbody">
-    <div class="panels">
-      <div class="panel">
-        <div class="ph">UBUNTU VM&nbsp; (systemctl)</div>
-        <div class="pstep"><div class="snum">1</div><div class="pins">Check status of the SSH service</div></div><div class="pcmd">sudo systemctl status ssh</div>
-        <div class="pstep"><div class="snum">2</div><div class="pins">List all running services</div></div><div class="pcmd">systemctl list-units --type=service --state=running</div>
-        <div class="pstep"><div class="snum">3</div><div class="pins">Stop the SSH service (careful!)</div></div><div class="pcmd">sudo systemctl stop ssh</div>
-        <div class="pstep"><div class="snum">4</div><div class="pins">Start it again</div></div><div class="pcmd">sudo systemctl start ssh</div>
-        <div class="pstep"><div class="snum">5</div><div class="pins">Restart in one step</div></div><div class="pcmd">sudo systemctl restart ssh</div>
-        <div class="pstep"><div class="snum">6</div><div class="pins">Check if service auto-starts on boot</div></div><div class="pcmd">sudo systemctl is-enabled ssh</div>
-        <div class="pstep"><div class="snum">7</div><div class="pins">Enable auto-start on boot</div></div><div class="pcmd">sudo systemctl enable ssh</div>
+    <div class="svc2">
+      <div class="svccol">
+        <div class="svch svch-ub">UBUNTU VM &nbsp;<span>(systemctl — practice on your VM)</span></div>
+        <div class="lstep"><span class="ln">1</span><span class="li">Check status of the SSH service</span><code class="lc">sudo systemctl status ssh</code></div>
+        <div class="lstep"><span class="ln">2</span><span class="li">List all currently running services</span><code class="lc">systemctl list-units --type=service --state=running</code></div>
+        <div class="lstep"><span class="ln">3</span><span class="li">Stop the SSH service</span><code class="lc">sudo systemctl stop ssh</code></div>
+        <div class="lstep"><span class="ln">4</span><span class="li">Start it again</span><code class="lc">sudo systemctl start ssh</code></div>
+        <div class="lstep"><span class="ln">5</span><span class="li">Restart in one step</span><code class="lc">sudo systemctl restart ssh</code></div>
+        <div class="lstep"><span class="ln">6</span><span class="li">Check if service auto-starts on boot</span><code class="lc">sudo systemctl is-enabled ssh</code></div>
+        <div class="lstep"><span class="ln">7</span><span class="li">Enable auto-start on boot</span><code class="lc">sudo systemctl enable ssh</code></div>
       </div>
-      <div class="panel amber">
-        <div class="ph">RHEL 5.5 (REAL AMHS SERVER)&nbsp; — For Reference Only</div>
-        <div class="pstep"><div class="snum amber">1</div><div class="pins">Check AMHS service status</div></div><div class="pcmd">service amhs status</div>
-        <div class="pstep"><div class="snum amber">2</div><div class="pins">List all services and their state</div></div><div class="pcmd">chkconfig --list</div>
-        <div class="pstep"><div class="snum amber">3</div><div class="pins">Stop the AMHS service</div></div><div class="pcmd">service amhs stop</div>
-        <div class="pstep"><div class="snum amber">4</div><div class="pins">Start the AMHS service</div></div><div class="pcmd">service amhs start</div>
-        <div class="pstep"><div class="snum amber">5</div><div class="pins">Restart the AMHS service</div></div><div class="pcmd">service amhs restart</div>
-        <div class="pstep"><div class="snum amber">6</div><div class="pins">Check if AMHS starts on boot</div></div><div class="pcmd">chkconfig amhs --list</div>
-        <div class="pstep"><div class="snum amber">7</div><div class="pins">Enable AMHS to start on boot</div></div><div class="pcmd">chkconfig amhs on</div>
+      <div class="svccol">
+        <div class="svch svch-rh">RHEL 5.5 — REAL AMHS SERVER &nbsp;<span>(for reference only)</span></div>
+        <div class="lstep"><span class="ln">1</span><span class="li">Check AMHS service status</span><code class="lc">service amhs status</code></div>
+        <div class="lstep"><span class="ln">2</span><span class="li">List all services and their state</span><code class="lc">chkconfig --list</code></div>
+        <div class="lstep"><span class="ln">3</span><span class="li">Stop the AMHS service</span><code class="lc">service amhs stop</code></div>
+        <div class="lstep"><span class="ln">4</span><span class="li">Start the AMHS service</span><code class="lc">service amhs start</code></div>
+        <div class="lstep"><span class="ln">5</span><span class="li">Restart the AMHS service</span><code class="lc">service amhs restart</code></div>
+        <div class="lstep"><span class="ln">6</span><span class="li">Check if AMHS starts on boot</span><code class="lc">chkconfig amhs --list</code></div>
+        <div class="lstep"><span class="ln">7</span><span class="li">Enable AMHS to start on boot</span><code class="lc">chkconfig amhs on</code></div>
       </div>
     </div>
   </div>
-  <div class="lfoot"><span>AMHS Linux Lab Workbook&nbsp; •&nbsp; Ubuntu VM Practice</span><span>17</span></div>
+  <div class="lfoot"><span></span><span>18</span></div>
 </section>
 
-<!-- 18 LAB 5 ANSWER -->
-<section class="slide" data-title="Lab 5: Answer Key">
-  <div class="lhead"><div class="ltitle">Lab 5: Answer Key — Service Status Output</div><div class="badge green">ANSWER KEY</div></div>
+<section class="slide ans-slide" data-title="Lab 5: Answer Key">
+<div class="lhead"><div class="ltitle">Lab 5: Answer Key — Service Status Output</div><div class="badge green">ANSWER KEY</div></div>
   <div class="dash"></div>
   <div class="lbody">
-    <div class="ans2">
+    <div class="ans2 ansfull">
       <div class="term green"><div class="lbl">Expected Output:</div><pre><span class="pr">$ sudo systemctl status ssh</span>
 ● ssh.service - OpenBSD Secure Shell server
-   Loaded: loaded (/lib/systemd/system/ssh.service; enabled)
-   Active: active (running) since Mon 2024-01-15 07:00
-  Process: 876 ExecStartPre=/usr/sbin/sshd -t (status=0)
+   Loaded: loaded (.../ssh.service; enabled)
+   Active: active (running) since Mon 07:00:01 UTC
  Main PID: 893 (sshd)
     Tasks: 1 (limit: 1111)
    CGroup: /system.slice/ssh.service
            └─893 /usr/sbin/sshd -D
-<span class="pr">$ sudo systemctl stop ssh</span>   (no output = success)
-<span class="pr">$ sudo systemctl start ssh</span>  (no output = success)
+<span class="pr">$ systemctl list-units --state=running (partial)</span>
+UNIT          LOAD   ACTIVE SUB     DESCRIPTION
+cron.service  loaded active running Command Scheduler
+ssh.service   loaded active running OpenBSD Secure...
+ufw.service   loaded active running Uncomplicated FW
+<span class="pr">$ sudo systemctl stop ssh</span>
+(no output — silence means it succeeded)
 <span class="pr">$ sudo systemctl is-enabled ssh</span>
 enabled</pre></div>
-      <div class="ans-note"><div class="nh">COMPARISON TABLE</div>
-        <p class="mono" style="font-size:11px;line-height:1.55;color:var(--body)">Action&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ubuntu (VM)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RHEL 5.5<br>
-        Status&nbsp;&nbsp;&nbsp;&nbsp;systemctl status ssh&nbsp;&nbsp;service amhs status<br>
-        Start&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;systemctl start ssh&nbsp;&nbsp;&nbsp;service amhs start<br>
-        Stop&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;systemctl stop ssh&nbsp;&nbsp;&nbsp;&nbsp;service amhs stop<br>
-        Restart&nbsp;&nbsp;systemctl restart ssh&nbsp;service amhs restart<br>
-        Enable&nbsp;&nbsp;&nbsp;systemctl enable ssh&nbsp;&nbsp;chkconfig amhs on<br>
-        List all&nbsp;systemctl list-units&nbsp;&nbsp;chkconfig --list</p>
-        <p style="margin-top:8px"><span style="color:#5fd6a6">● Green dot</span> = service is running<br><span style="color:#ff8b7a">● Red dot</span> = service is stopped/failed</p>
-      </div>
+      <div class="term green"><div class="lbl">Expected Output:</div><pre>COMPARISON TABLE:
+Action       Ubuntu (VM)          RHEL 5.5 (server)
+──────────────────────────────────────────────────
+Status       systemctl status ssh service amhs status
+Start        systemctl start ssh  service amhs start
+Stop         systemctl stop ssh   service amhs stop
+Restart      systemctl restart    service amhs restart
+Auto-on      systemctl enable ssh chkconfig amhs on
+Auto-off     systemctl disable    chkconfig amhs off
+List all     systemctl list-units chkconfig --list
+
+STATUS symbols to know:
+  ● green dot = service active (running)
+  ● red dot   = service failed or stopped
+  Active: active (running) = healthy
+  Active: inactive (dead)  = stopped</pre></div>
     </div>
   </div>
-  <div class="lfoot"><span>AMHS Linux Lab Workbook&nbsp; •&nbsp; Ubuntu VM Practice</span><span>18</span></div>
+  <div class="lfoot"><span></span><span>19</span></div>
 </section>
 
-<!-- 19 DIVIDER LAB 6 -->
 <section class="slide divider" data-title="Lab 6 · Network Commands">
   <div class="dline"></div>
   <div class="dbox"><div class="dn">6</div><div class="dl">LAB</div></div>
   <div class="dtitle">Network Commands</div>
-  <div class="dcmds">hostname&nbsp; •&nbsp; ifconfig/ip&nbsp; •&nbsp; ping&nbsp; •&nbsp; route&nbsp; •&nbsp; netstat&nbsp; •&nbsp; telnet</div>
+  <div class="dcmds">ip addr&nbsp; •&nbsp; hostname&nbsp; •&nbsp; ping&nbsp; •&nbsp; ip route&nbsp; •&nbsp; ss&nbsp; •&nbsp; telnet</div>
 </section>
 
-<!-- 20 LAB 6 EXERCISE -->
-<section class="slide" data-title="Lab 6: Network Commands (Exercise)">
-  <div class="lhead"><div class="ltitle">Lab 6: Network Commands</div><div class="lsub">Check IP, test connectivity, and inspect open ports</div><div class="badge">EXERCISE</div></div>
+<section class="slide ex-dense ex-s21" data-title="Lab 6: Network Commands (Exercise)">
+<div class="lhead"><div class="ltitle">Lab 6: Network Commands</div><div class="lsub">Check IP, test connectivity, and inspect open ports</div><div class="badge">EXERCISE</div></div>
   <div class="dash"></div>
   <div class="lbody">
-    <div class="steps two" style="gap:6px 30px">
-      <div class="step"><div class="snum">1</div><div class="sbody"><div class="ins">Show network interfaces and IP addresses (Ubuntu)</div><div class="cmd">ip addr show</div></div></div>
-      <div class="step"><div class="snum">7</div><div class="sbody"><div class="ins">Show the routing table (Ubuntu)</div><div class="cmd">ip route show</div></div></div>
-      <div class="step"><div class="snum">2</div><div class="sbody"><div class="ins">Show IP address (classic — install if needed)</div><div class="cmd">ifconfig &nbsp;OR&nbsp; sudo apt install net-tools</div></div></div>
-      <div class="step"><div class="snum">8</div><div class="sbody"><div class="ins">Show the routing table (classic method)</div><div class="cmd">route -n</div></div></div>
-      <div class="step"><div class="snum">3</div><div class="sbody"><div class="ins">Show just your main IP address (quick)</div><div class="cmd">hostname -I</div></div></div>
-      <div class="step"><div class="snum">9</div><div class="sbody"><div class="ins">Show all listening ports (Ubuntu method)</div><div class="cmd">ss -tlnp</div></div></div>
-      <div class="step"><div class="snum">4</div><div class="sbody"><div class="ins">Ping the local loopback (always works)</div><div class="cmd">ping -c 4 127.0.0.1</div></div></div>
-      <div class="step"><div class="snum">10</div><div class="sbody"><div class="ins">Show all listening ports (classic method)</div><div class="cmd">netstat -tlnp</div></div></div>
-      <div class="step"><div class="snum">5</div><div class="sbody"><div class="ins">Ping the VM's own IP (from step 1)</div><div class="cmd">ping -c 4 &lt;your-ip&gt;</div></div></div>
-      <div class="step"><div class="snum">11</div><div class="sbody"><div class="ins">Test if port 22 (SSH) is open on localhost</div><div class="cmd">telnet 127.0.0.1 22</div></div></div>
-      <div class="step"><div class="snum">6</div><div class="sbody"><div class="ins">Ping an external host (requires internet)</div><div class="cmd">ping -c 4 8.8.8.8</div></div></div>
-      <div class="step"><div class="snum">12</div><div class="sbody"><div class="ins">Exit telnet connection</div><div class="cmd plain">(press Ctrl+] then type quit)</div></div></div>
+    <span class="epill">EXERCISE</span>
+    <div class="ex2col">
+      <div class="excol">
+        <div class="exinstall"><strong>INSTALL FIRST</strong> — run before starting:<br>        <code>sudo apt install -y telnet</code> &nbsp;(telnet client — needed for step 7)</div>
+        <div class="steps inline exsteps"><div class="step"><div class="snum">1</div><div class="sbody"><div class="ins">Show all network interfaces and IP addresses:</div><div class="cmd">ip addr show</div></div></div><div class="step"><div class="snum">2</div><div class="sbody"><div class="ins">Show just your IP address (quick one-liner):</div><div class="cmd">hostname -I</div></div></div><div class="step"><div class="snum">3</div><div class="sbody"><div class="ins">Ping the loopback address (always works, no network needed):</div><div class="cmd">ping -c 4 127.0.0.1</div></div></div><div class="step"><div class="snum">4</div><div class="sbody"><div class="ins">Ping an external host (requires internet or ping 192.168.208.1):</div><div class="cmd">ping -c 4 8.8.8.8</div></div></div></div>
+      </div>
+      <div class="excol">
+        <div class="exinstall ex-placeholder">&nbsp;</div>
+        <div class="steps inline exsteps"><div class="step"><div class="snum">5</div><div class="sbody"><div class="ins">Show the routing table (how traffic is directed):</div><div class="cmd">ip route show</div></div></div><div class="step"><div class="snum">6</div><div class="sbody"><div class="ins">Show all listening ports (which services are accepting connections):</div><div class="cmd">ss -tlnp</div></div></div><div class="step"><div class="snum">7</div><div class="sbody"><div class="ins">Test if SSH port 22 is open on localhost:</div><div class="cmd">telnet 127.0.0.1 22</div></div></div><div class="step"><div class="snum">8</div><div class="sbody"><div class="ins">Exit the telnet connection:</div><div class="cmd">(press Ctrl+] then type quit and press Enter)</div></div></div></div>
+        <div class="uninote"><strong>INTERNET NOTE:</strong> Step 4 (ping 8.8.8.8) requires internet access. If it fails with 100% packet loss, your VM has no internet — skip step 4 and continue. All other steps work without internet.</div>
+      </div>
     </div>
-    <div class="unote"><div class="uh">UBUNTU NOTE</div><p>Ubuntu uses <span class="mono">ip addr</span> and <span class="mono">ss</span> by default. <span class="mono">ifconfig</span> and <span class="mono">netstat</span> need net-tools: <span class="mono">sudo apt install net-tools</span>. On RHEL 5.5, ifconfig and netstat are built-in.</p></div>
   </div>
-  <div class="lfoot"><span>AMHS Linux Lab Workbook&nbsp; •&nbsp; Ubuntu VM Practice</span><span>20</span></div>
+  <div class="lfoot"><span></span><span>21</span></div>
 </section>
 
-<!-- 21 LAB 6 ANSWER -->
-<section class="slide" data-title="Lab 6: Answer Key">
-  <div class="lhead"><div class="ltitle">Lab 6: Answer Key — Network Output</div><div class="badge green">ANSWER KEY</div></div>
+<section class="slide ans-slide" data-title="Lab 6: Answer Key">
+<div class="lhead"><div class="ltitle">Lab 6: Answer Key — Network Output</div><div class="badge green">ANSWER KEY</div></div>
   <div class="dash"></div>
   <div class="lbody">
-    <div class="ans2">
+    <div class="ans2 ansfull">
       <div class="term green"><div class="lbl">Expected Output:</div><pre><span class="pr">$ ip addr show (partial)</span>
 1: lo: &lt;LOOPBACK,UP&gt; mtu 65536
     inet 127.0.0.1/8 scope host lo
 2: eth0: &lt;BROADCAST,MULTICAST,UP&gt; mtu 1500
     inet 192.168.1.100/24 brd 192.168.1.255
+<span class="pr">$ hostname -I</span>
+192.168.1.100
+(shows only the main IP — faster than ip addr)
 <span class="pr">$ ping -c 4 127.0.0.1</span>
 PING 127.0.0.1: 56 bytes of data.
-64 bytes from 127.0.0.1: icmp_seq=1 ttl=64 time=0.023 ms
-64 bytes from 127.0.0.1: icmp_seq=2 ttl=64 time=0.021 ms
+64 bytes from 127.0.0.1: icmp_seq=1 ttl=64 0.023ms
 --- 127.0.0.1 ping statistics ---
 4 packets transmitted, 4 received, 0% packet loss
-<span class="pr">$ ss -tlnp</span>
-State  Recv-Q Send-Q Local Address:Port
-LISTEN 0      128    0.0.0.0:22    (sshd)</pre></div>
+<span class="pr">$ ping -c 4 8.8.8.8  (if internet available)</span>
+4 packets transmitted, 4 received, 0% packet loss
+If NO internet: 4 transmitted, 0 received, 100% loss
+(100% loss on 8.8.8.8 = no internet, not a problem)</pre></div>
       <div class="term green"><div class="lbl">Expected Output:</div><pre><span class="pr">$ ip route show</span>
 default via 192.168.1.1 dev eth0
 192.168.1.0/24 dev eth0 proto kernel
-<span class="cmt">KEY: 'default via X.X.X.X' = your gateway (router)</span>
+KEY: 'default via X.X.X.X' = your gateway (router)
+<span class="pr">$ ss -tlnp</span>
+State Recv-Q Send-Q Local Address:Port Process
+LISTEN 0   128   0.0.0.0:22          sshd
+LISTEN 0   5     127.0.0.1:53        systemd-resolve
 <span class="pr">$ telnet 127.0.0.1 22</span>
 Trying 127.0.0.1...
 Connected to 127.0.0.1.
-SSH-2.0-OpenSSH_8.9p1 Ubuntu
-(Ctrl+] then 'quit' to exit)
-<span class="cmt">Port reference for AMHS work:
-  22  = SSH (admin access)
-  102 = X.400 / AMHS messaging
-  80  = HTTP    443 = HTTPS</span>
-Use: telnet &lt;amhs-ip&gt; 102  (on real server only)</pre></div>
+Escape character is '^]'.
+SSH-2.0-OpenSSH_8.9p1 Ubuntu-3ubuntu0.6
+(press Ctrl+] then type 'quit' and Enter to exit)
+Port numbers for AMHS:
+  22  = SSH (admin/maintenance access)
+  102 = X.400 AMHS messaging port
+  Use: telnet &lt;amhs-server-ip&gt; 102 to test reach</pre></div>
     </div>
   </div>
-  <div class="lfoot"><span>AMHS Linux Lab Workbook&nbsp; •&nbsp; Ubuntu VM Practice</span><span>21</span></div>
+  <div class="lfoot"><span></span><span>22</span></div>
 </section>
 
-<!-- 22 DIVIDER LAB 7 -->
 <section class="slide divider" data-title="Lab 7 · Disk &amp; Memory">
   <div class="dline"></div>
   <div class="dbox"><div class="dn">7</div><div class="dl">LAB</div></div>
   <div class="dtitle">Disk &amp; Memory</div>
-  <div class="dcmds">df&nbsp; •&nbsp; du&nbsp; •&nbsp; free&nbsp; •&nbsp; vmstat</div>
+  <div class="dcmds">df&nbsp; •&nbsp; du&nbsp; •&nbsp; free&nbsp; •&nbsp; vmstat&nbsp; •&nbsp; find</div>
 </section>
 
-<!-- 23 LAB 7 EXERCISE -->
 <section class="slide" data-title="Lab 7: Disk &amp; Memory (Exercise)">
-  <div class="lhead"><div class="ltitle">Lab 7: Disk &amp; Memory Monitoring</div><div class="lsub">Check storage space and system resources</div><div class="badge">EXERCISE</div></div>
+<div class="lhead"><div class="ltitle">Lab 7: Disk &amp; Memory Monitoring</div><div class="lsub">Check storage space and system resources</div><div class="badge">EXERCISE</div></div>
   <div class="dash"></div>
   <div class="lbody">
-    <div class="steps two">
-      <div class="step"><div class="snum">1</div><div class="sbody"><div class="ins">Check disk space on all partitions (human readable)</div><div class="cmd">df -h</div></div></div>
-      <div class="step"><div class="snum">6</div><div class="sbody"><div class="ins">Check memory in gigabytes</div><div class="cmd">free -g</div></div></div>
-      <div class="step"><div class="snum">2</div><div class="sbody"><div class="ins">Check disk space — only show real filesystems</div><div class="cmd">df -hT --type=ext4 --type=xfs</div></div></div>
-      <div class="step"><div class="snum">7</div><div class="sbody"><div class="ins">Check memory including swap</div><div class="cmd">free -m -t</div></div></div>
-      <div class="step"><div class="snum">3</div><div class="sbody"><div class="ins">Check disk usage of your home directory</div><div class="cmd">du -sh ~</div></div></div>
-      <div class="step"><div class="snum">8</div><div class="sbody"><div class="ins">Get a one-time CPU/memory/IO snapshot</div><div class="cmd">vmstat 1 5</div></div></div>
-      <div class="step"><div class="snum">4</div><div class="sbody"><div class="ins">Show the 5 largest items in your home directory</div><div class="cmd">du -sh ~/* 2&gt;/dev/null | sort -rh | head -5</div></div></div>
-      <div class="step"><div class="snum">9</div><div class="sbody"><div class="ins">Check disk usage of practice folder</div><div class="cmd">du -sh ~/amhs-practice/</div></div></div>
-      <div class="step"><div class="snum">5</div><div class="sbody"><div class="ins">Check total RAM and how much is free</div><div class="cmd">free -m</div></div></div>
-      <div class="step"><div class="snum">10</div><div class="sbody"><div class="ins">Find files larger than 100KB in home directory</div><div class="cmd">find ~ -size +100k -type f 2&gt;/dev/null</div></div></div>
+    <span class="epill">EXERCISE</span>
+    <div class="steps inline">
+      <div class="step"><div class="snum">1</div><div class="sbody"><div class="ins">Check disk space on all partitions (human readable):</div><div class="cmd">df -h</div></div></div>
+      <div class="step"><div class="snum">2</div><div class="sbody"><div class="ins">Check disk usage of your home directory:</div><div class="cmd">du -sh ~</div></div></div>
+      <div class="step"><div class="snum">3</div><div class="sbody"><div class="ins">Show the 5 largest items in your home directory:</div><div class="cmd">du -sh ~/* 2&gt;/dev/null | sort -rh | head -5</div></div></div>
+      <div class="step"><div class="snum">4</div><div class="sbody"><div class="ins">Check total RAM, used RAM, and free RAM:</div><div class="cmd">free -m</div></div></div>
+      <div class="step"><div class="snum">5</div><div class="sbody"><div class="ins">Get a CPU/memory/IO snapshot (5 samples, 1s each):</div><div class="cmd">vmstat 1 5</div></div></div>
+      <div class="step"><div class="snum">6</div><div class="sbody"><div class="ins">Check disk usage of just the amhs-practice folder:</div><div class="cmd">du -sh ~/amhs-practice/</div></div></div>
+      <div class="step"><div class="snum">7</div><div class="sbody"><div class="ins">Find files larger than 100 KB in your home directory:</div><div class="cmd">find ~ -size +100k -type f 2&gt;/dev/null</div></div></div>
     </div>
-    <div class="unote red"><div class="uh">CRITICAL AMHS NOTE</div><p>If <span class="mono">df -h</span> shows a partition at 90%+ used, this is a warning. At 100%, AMHS cannot write logs and will malfunction. Alert your supervisor immediately.</p></div>
+    <div class="unote"><div class="uh">CRITICAL AMHS ALERT</div><p>If <span class="mono">df -h</span> shows any partition at 90%+ used, alert your supervisor immediately. At 100%, AMHS cannot write log files and will malfunction. Disk space monitoring is part of daily AMHS operations.</p></div>
   </div>
-  <div class="lfoot"><span>AMHS Linux Lab Workbook&nbsp; •&nbsp; Ubuntu VM Practice</span><span>23</span></div>
+  <div class="lfoot"><span></span><span>24</span></div>
 </section>
 
-<!-- 24 LAB 7 ANSWER -->
-<section class="slide" data-title="Lab 7: Answer Key">
-  <div class="lhead"><div class="ltitle">Lab 7: Answer Key — Disk &amp; Memory Output</div><div class="badge green">ANSWER KEY</div></div>
+<section class="slide ans-slide" data-title="Lab 7: Answer Key">
+<div class="lhead"><div class="ltitle">Lab 7: Answer Key — Disk & Memory Output</div><div class="badge green">ANSWER KEY</div></div>
   <div class="dash"></div>
   <div class="lbody">
-    <div class="ans2">
+    <div class="ans2 ansfull">
       <div class="term green"><div class="lbl">Expected Output:</div><pre><span class="pr">$ df -h</span>
-Filesystem  Size  Used  Avail Use%  Mounted on
-/dev/sda1    20G  6.2G   13G   33%  /
-tmpfs       994M     0  994M    0%  /dev/shm
-<span class="pr">$ du -sh ~/amhs-practice/</span>
-40K    /home/student/amhs-practice/
+Filesystem  Size  Used  Avail  Use%  Mounted on
+/dev/sda1    20G  6.2G   13G    33%  /
+tmpfs       994M     0  994M     0%  /dev/shm
+(Check Use% — alert if any partition reaches 90%+)
+<span class="pr">$ du -sh ~</span>
+312K    /home/student
+(total size of home dir including subdirectories)
 <span class="pr">$ du -sh ~/* 2&gt;/dev/null | sort -rh | head -5</span>
-100M  /home/student/Downloads
- 40K  /home/student/amhs-practice
- 12K  /home/student/.bashrc</pre></div>
-      <div class="term green"><div class="lbl">Expected Output:</div><pre><span class="pr">$ free -m</span>
+292K    /home/student/amhs-practice
+ 12K    /home/student/.bashrc
+4.0K    /home/student/.bash_history
+(amhs-practice largest — has the 200KB sample)
+<span class="pr">$ du -sh ~/amhs-practice/</span>
+292K    /home/student/amhs-practice/
+(292K = logs + config + 200KB sample_data.b64)</pre></div>
+      <div class="term green"><div class="lbl">Expected Output:</div><pre><span class="pr">$ free -m   (values in megabytes)</span>
         total  used  free  buff/cache  available
 Mem:     1987   512   100        1375        850
 Swap:    2047     0  2047
-<span class="cmt">READING free OUTPUT:
-  Mem used = 512 MB    (programs using RAM)
-  Mem available = 850 MB  (use THIS number)
-  Swap used = 0 MB     (good — swap not needed)</span>
-<span class="pr">$ vmstat 1 5 (partial)</span>
- r  b   swpd   free   si so bi bo us sy id wa
- 0  0      0 102400   0  0  1  0  0  0 99  0
-<span class="cmt">Key vmstat columns:
-  r=run queue  si/so=swap  us/sy/id=CPU%  wa=disk wait</span></pre></div>
+Reading free output:
+  total = total RAM installed
+  used  = RAM used by programs
+  available = RAM free for new programs
+             (use this number, not 'free')
+  Swap used = 0 is good (no disk used as RAM)
+<span class="pr">$ vmstat 1 5 (5 one-second samples)</span>
+ r  b  swpd    free   si so  bi bo us sy id wa
+ 1  0     0  102400    0  0   1  0  1  0 99  0
+ 0  0     0  102400    0  0   0  0  0  0 100 0
+(id=99 or 100 = CPU almost idle — healthy VM)
+<span class="pr">$ find ~ -size +100k -type f 2&gt;/dev/null</span>
+/home/student/amhs-practice/backup/sample_data.b64
+(The 200 KB test file created in Lab 0 Setup Part 2)</pre></div>
     </div>
   </div>
-  <div class="lfoot"><span>AMHS Linux Lab Workbook&nbsp; •&nbsp; Ubuntu VM Practice</span><span>24</span></div>
+  <div class="lfoot"><span></span><span>25</span></div>
 </section>
 
-<!-- 25 DIVIDER LAB 8 -->
 <section class="slide divider" data-title="Lab 8 · File Permissions &amp; Users">
   <div class="dline"></div>
   <div class="dbox"><div class="dn">8</div><div class="dl">LAB</div></div>
   <div class="dtitle">File Permissions &amp; Users</div>
-  <div class="dcmds">ls -l&nbsp; •&nbsp; chmod&nbsp; •&nbsp; chown&nbsp; •&nbsp; id&nbsp; •&nbsp; su&nbsp; •&nbsp; sudo</div>
+  <div class="dcmds">ls -l&nbsp; •&nbsp; chmod&nbsp; •&nbsp; chown&nbsp; •&nbsp; id&nbsp; •&nbsp; sudo</div>
 </section>
 
-<!-- 26 LAB 8 EXERCISE -->
-<section class="slide" data-title="Lab 8: Permissions &amp; Users (Exercise)">
-  <div class="lhead"><div class="ltitle">Lab 8: Permissions &amp; Users</div><div class="lsub">Read and change file permissions</div><div class="badge">EXERCISE</div></div>
+<section class="slide ex-dense ex-s27" data-title="Lab 8: Permissions &amp; Users (Exercise)">
+<div class="lhead"><div class="ltitle">Lab 8: Permissions &amp; Users</div><div class="lsub">Read and change file permissions</div><div class="badge">EXERCISE</div></div>
   <div class="dash"></div>
   <div class="lbody">
-    <div class="permbar"><b style="color:#fff">How to read permissions:</b>&nbsp; <span class="mono">-rw-r--r--</span> = file type | owner perms | group perms | others perms &nbsp;&nbsp;|&nbsp;&nbsp; <span class="mono">r</span>=read (4) <span class="mono">w</span>=write (2) <span class="mono">x</span>=execute (1) &nbsp;•&nbsp; rwx=7, r-x=5, rw-=6</div>
-    <div class="steps two" style="gap:6px 30px">
-      <div class="step"><div class="snum">1</div><div class="sbody"><div class="ins">Read the full permissions of your practice files</div><div class="cmd">ls -lh ~/amhs-practice/</div></div></div>
-      <div class="step"><div class="snum">6</div><div class="sbody"><div class="ins">Run it now (should work)</div><div class="cmd">~/amhs-practice/test.sh</div></div></div>
-      <div class="step"><div class="snum">2</div><div class="sbody"><div class="ins">Create a test script file</div><div class="cmd">echo '#!/bin/bash\necho hello' &gt; ~/amhs-practice/test.sh</div></div></div>
-      <div class="step"><div class="snum">7</div><div class="sbody"><div class="ins">Set permissions numerically (owner rw, others r)</div><div class="cmd">chmod 644 ~/amhs-practice/message.txt</div></div></div>
-      <div class="step"><div class="snum">3</div><div class="sbody"><div class="ins">Check its permissions</div><div class="cmd">ls -lh ~/amhs-practice/test.sh</div></div></div>
-      <div class="step"><div class="snum">8</div><div class="sbody"><div class="ins">Remove all write permissions from a file</div><div class="cmd">chmod a-w ~/amhs-practice/config/amhs.conf</div></div></div>
-      <div class="step"><div class="snum">4</div><div class="sbody"><div class="ins">Try to run it (should fail — not executable yet)</div><div class="cmd">~/amhs-practice/test.sh</div></div></div>
-      <div class="step"><div class="snum">9</div><div class="sbody"><div class="ins">Try to edit the protected file (should fail)</div><div class="cmd">echo 'test' &gt;&gt; ~/amhs-practice/config/amhs.conf</div></div></div>
-      <div class="step"><div class="snum">5</div><div class="sbody"><div class="ins">Make it executable (add x for owner)</div><div class="cmd">chmod u+x ~/amhs-practice/test.sh</div></div></div>
-      <div class="step"><div class="snum">10</div><div class="sbody"><div class="ins">Restore write permission</div><div class="cmd">chmod u+w ~/amhs-practice/config/amhs.conf</div></div></div>
+    <span class="epill">EXERCISE</span>
+    <div class="experm"><strong>How to read permissions: </strong><code>-rw-r--r--</code> = file type | owner | group | others. &nbsp;r=read(4) &nbsp;w=write(2) &nbsp;x=execute(1) &nbsp;-=no perm. &nbsp;rwx=7 &nbsp;r-x=5 &nbsp;rw-=6</div>
+    <div class="ex2col">
+      <div class="excol"><div class="steps inline exsteps"><div class="step"><div class="snum">1</div><div class="sbody"><div class="ins">List all files with full permission details:</div><div class="cmd">ls -lh ~/amhs-practice/</div></div></div><div class="step"><div class="snum">2</div><div class="sbody"><div class="ins">Create a small test script file:</div><div class="cmd">printf '#!/bin/bash\necho hello\n' &gt; ~/amhs-practice/test.sh</div></div></div><div class="step"><div class="snum">3</div><div class="sbody"><div class="ins">Check the script's current permissions:</div><div class="cmd">ls -lh ~/amhs-practice/test.sh</div></div></div><div class="step"><div class="snum">4</div><div class="sbody"><div class="ins">Try to run it (should fail — not executable yet):</div><div class="cmd">~/amhs-practice/test.sh</div></div></div><div class="step"><div class="snum">5</div><div class="sbody"><div class="ins">Make it executable for the owner:</div><div class="cmd">chmod u+x ~/amhs-practice/test.sh</div></div></div></div></div>
+      <div class="excol"><div class="steps inline exsteps"><div class="step"><div class="snum">6</div><div class="sbody"><div class="ins">Run it again (should succeed now):</div><div class="cmd">~/amhs-practice/test.sh</div></div></div><div class="step"><div class="snum">7</div><div class="sbody"><div class="ins">Set permissions numerically (owner rw, group r, others r):</div><div class="cmd">chmod 644 ~/amhs-practice/message_orig.txt</div></div></div><div class="step"><div class="snum">8</div><div class="sbody"><div class="ins">Remove all write permissions from the config file:</div><div class="cmd">chmod a-w ~/amhs-practice/config/amhs.conf</div></div></div><div class="step"><div class="snum">9</div><div class="sbody"><div class="ins">Try to edit the protected config (should fail):</div><div class="cmd">echo 'test' &gt;&gt; ~/amhs-practice/config/amhs.conf</div></div></div><div class="step"><div class="snum">10</div><div class="sbody"><div class="ins">Restore write permission to the config:</div><div class="cmd">chmod u+w ~/amhs-practice/config/amhs.conf</div></div></div></div></div>
     </div>
   </div>
-  <div class="lfoot"><span>AMHS Linux Lab Workbook&nbsp; •&nbsp; Ubuntu VM Practice</span><span>26</span></div>
+  <div class="lfoot"><span></span><span>27</span></div>
 </section>
 
-<!-- 27 LAB 8 ANSWER -->
-<section class="slide" data-title="Lab 8: Answer Key">
-  <div class="lhead"><div class="ltitle">Lab 8: Answer Key — Permissions Output</div><div class="badge green">ANSWER KEY</div></div>
+<section class="slide ans-slide" data-title="Lab 8: Answer Key">
+<div class="lhead"><div class="ltitle">Lab 8: Answer Key — Permissions Output</div><div class="badge green">ANSWER KEY</div></div>
   <div class="dash"></div>
   <div class="lbody">
-    <div class="ans2">
+    <div class="ans2 ansfull">
       <div class="term green"><div class="lbl">Expected Output:</div><pre><span class="pr">$ ls -lh ~/amhs-practice/</span>
-total 24K
-drwxrwxr-x 2 student student 4.0K logs/
--rw-rw-r-- 1 student student   54 message.txt
--rw-rw-r-- 1 student student  128 config/amhs.conf
-<span class="pr">$ ~/amhs-practice/test.sh  (before chmod)</span>
+drwxrwxr-x 2 student student  265K backup/
+drwxrwxr-x 2 student student  4.0K config/
+drwxrwxr-x 2 student student  4.0K logs/
+-rw-rw-r-- 1 student student    93 message.txt
+<span class="pr">$ ls -lh test.sh   (step 3 — BEFORE chmod)</span>
+-rw-rw-r-- 1 student student 30 Jan 15 test.sh
+           (no x = not executable yet)
+<span class="pr">$ ~/amhs-practice/test.sh   (step 4)</span>
 -bash: .../test.sh: Permission denied
-<span class="pr">$ chmod u+x test.sh &amp;&amp; ~/amhs-practice/test.sh</span>
+<span class="pr">$ chmod u+x ~/amhs-practice/test.sh   (step 5)</span>
+(no output — silence means chmod succeeded)
+<span class="pr">$ ~/amhs-practice/test.sh   (step 6 — after u+x)</span>
 hello
-<span class="pr">$ ls -lh test.sh (after chmod u+x)</span>
+<span class="pr">$ ls -lh test.sh   (confirm permissions changed)</span>
 -rwxrw-r-- 1 student student 30 Jan 15 test.sh
-           ^ owner now has x (execute)</pre></div>
-      <div class="term green"><div class="lbl">Expected Output:</div><pre><span class="pr">$ chmod a-w config/amhs.conf</span>
-<span class="pr">$ echo test &gt;&gt; config/amhs.conf</span>
--bash: config/amhs.conf: Permission denied
-<span class="cmt">chmod numeric quick reference:
-  777 = rwxrwxrwx (everyone — AVOID)
-  755 = rwxr-xr-x (scripts/directories)
-  644 = rw-r--r--  (regular files)
+           ^ owner now has x (execute added)</pre></div>
+      <div class="term green"><div class="lbl">Expected Output:</div><pre><span class="pr">$ chmod 644 ~/amhs-practice/message.txt (step 7)</span>
+(no output — silence means chmod succeeded)
+<span class="pr">$ chmod a-w config/amhs.conf   (step 8)</span>
+(no output — silence means chmod succeeded)
+<span class="pr">$ echo 'test' &gt;&gt; config/amhs.conf   (step 9)</span>
+-bash: .../config/amhs.conf:
+       Permission denied
+(Good — the write block is working correctly)
+<span class="pr">$ chmod u+w config/amhs.conf   (step 10)</span>
+(no output — silence means chmod succeeded)
+chmod numeric quick reference:
+  777 = rwxrwxrwx (everyone full — AVOID)
+  755 = rwxr-xr-x (scripts, directories)
+  644 = rw-r--r--  (regular data files)
   640 = rw-r-----  (sensitive config files)
-  600 = rw-------  (private keys, passwords)
-chown command (change ownership):
-  chown user:group filename
-  chown amhs:amhs /etc/amhs/config
-  (requires root/sudo on real server)</span></pre></div>
+  600 = rw-------  (private keys)
+Rule: chmod gives NO output when it works.
+If you see output, it is an error message.</pre></div>
     </div>
   </div>
-  <div class="lfoot"><span>AMHS Linux Lab Workbook&nbsp; •&nbsp; Ubuntu VM Practice</span><span>27</span></div>
+  <div class="lfoot"><span></span><span>28</span></div>
 </section>
 
-<!-- 28 DIVIDER LAB 9 -->
 <section class="slide divider" data-title="Lab 9 · Backup &amp; Archive">
   <div class="dline"></div>
   <div class="dbox"><div class="dn">9</div><div class="dl">LAB</div></div>
   <div class="dtitle">Backup &amp; Archive</div>
-  <div class="dcmds">tar&nbsp; •&nbsp; gzip&nbsp; •&nbsp; md5sum&nbsp; •&nbsp; scp</div>
+  <div class="dcmds">tar&nbsp; •&nbsp; gzip&nbsp; •&nbsp; md5sum&nbsp; •&nbsp; restore verify</div>
 </section>
 
-<!-- 29 LAB 9 EXERCISE -->
-<section class="slide" data-title="Lab 9: Backup &amp; Archive (Exercise)">
-  <div class="lhead"><div class="ltitle">Lab 9: Backup &amp; Archive</div><div class="lsub">Create, compress, and verify archives</div><div class="badge">EXERCISE</div></div>
+<section class="slide ex-dense ex-s30" data-title="Lab 9: Backup &amp; Archive (Exercise)">
+<div class="lhead"><div class="ltitle">Lab 9: Backup &amp; Archive</div><div class="lsub">Create, compress, and verify archives</div><div class="badge">EXERCISE</div></div>
   <div class="dash"></div>
   <div class="lbody">
-    <div class="steps two" style="gap:6px 30px">
-      <div class="step"><div class="snum">1</div><div class="sbody"><div class="ins">Go to the practice directory</div><div class="cmd">cd ~/amhs-practice</div></div></div>
-      <div class="step"><div class="snum">7</div><div class="sbody"><div class="ins">Verify today's backup file was created</div><div class="cmd">ls -lh backup/</div></div></div>
-      <div class="step"><div class="snum">2</div><div class="sbody"><div class="ins">Create a tar archive of the config folder</div><div class="cmd">tar -cvf backup/config_backup.tar config/</div></div></div>
-      <div class="step"><div class="snum">8</div><div class="sbody"><div class="ins">Generate a checksum for the backup file</div><div class="cmd">md5sum backup/config_$(date +%Y%m%d).tar.gz</div></div></div>
-      <div class="step"><div class="snum">3</div><div class="sbody"><div class="ins">Check what is inside the archive</div><div class="cmd">tar -tvf backup/config_backup.tar</div></div></div>
-      <div class="step"><div class="snum">9</div><div class="sbody"><div class="ins">Save the checksum to a file for later</div><div class="cmd">md5sum backup/config_$(date +%Y%m%d).tar.gz &gt; backup/checksum.md5</div></div></div>
-      <div class="step"><div class="snum">4</div><div class="sbody"><div class="ins">Compress the archive with gzip</div><div class="cmd">gzip backup/config_backup.tar</div></div></div>
-      <div class="step"><div class="snum">10</div><div class="sbody"><div class="ins">Extract the archive to a test folder to verify</div><div class="cmd">mkdir /tmp/restore_test &amp;&amp; tar -xzvf backup/config_$(date +%Y%m%d).tar.gz -C /tmp/restore_test/</div></div></div>
-      <div class="step"><div class="snum">5</div><div class="sbody"><div class="ins">Check the compressed file size</div><div class="cmd">ls -lh backup/</div></div></div>
-      <div class="step"><div class="snum">11</div><div class="sbody"><div class="ins">Verify extracted files look correct</div><div class="cmd">ls -lh /tmp/restore_test/config/</div></div></div>
-      <div class="step"><div class="snum">6</div><div class="sbody"><div class="ins">Create a timestamp-named backup (pro practice)</div><div class="cmd">tar -czvf backup/config_$(date +%Y%m%d).tar.gz config/</div></div></div>
-      <div class="step"><div class="snum">12</div><div class="sbody"><div class="ins">Verify backup integrity using saved checksum</div><div class="cmd">md5sum -c backup/checksum.md5</div></div></div>
+    <span class="epill">EXERCISE</span>
+    <div class="ex2col">
+      <div class="excol"><div class="steps inline exsteps"><div class="step"><div class="snum">1</div><div class="sbody"><div class="ins">Go to the practice directory:</div><div class="cmd">cd ~/amhs-practice</div></div></div><div class="step"><div class="snum">2</div><div class="sbody"><div class="ins">Create a tar archive of the config folder (verbose):</div><div class="cmd">tar -cvf backup/config_backup.tar config/</div></div></div><div class="step"><div class="snum">3</div><div class="sbody"><div class="ins">List the contents of the archive (verify what is inside):</div><div class="cmd">tar -tvf backup/config_backup.tar</div></div></div><div class="step"><div class="snum">4</div><div class="sbody"><div class="ins">Compress the archive with gzip:</div><div class="cmd">gzip backup/config_backup.tar</div></div></div><div class="step"><div class="snum">5</div><div class="sbody"><div class="ins">Check the compressed file size:</div><div class="cmd">ls -lh backup/config_backup.tar.gz</div></div></div><div class="step"><div class="snum">6</div><div class="sbody"><div class="ins">Create a date-stamped backup (filename uses today's date):</div><div class="cmd">tar -czvf backup/config_$(date +%Y%m%d).tar.gz config/</div></div></div></div></div>
+      <div class="excol">
+        <div class="steps inline exsteps"><div class="step"><div class="snum">7</div><div class="sbody"><div class="ins">Verify today's backup file was created:</div><div class="cmd">ls -lh backup/</div></div></div><div class="step"><div class="snum">8</div><div class="sbody"><div class="ins">Generate an MD5 checksum for the backup file:</div><div class="cmd">md5sum backup/config_$(date +%Y%m%d).tar.gz</div></div></div><div class="step"><div class="snum">9</div><div class="sbody"><div class="ins">Save the checksum to a file for future verification:</div><div class="cmd">md5sum backup/config_$(date +%Y%m%d).tar.gz &gt; backup/checksum.md5</div></div></div><div class="step"><div class="snum">10</div><div class="sbody"><div class="ins">Extract the archive to a test location to verify restore:</div><div class="cmd">mkdir /tmp/restore_test &amp;&amp; tar -xzvf backup/config_$(date +%Y%m%d).tar.gz -C /tmp/restore_test/</div></div></div><div class="step"><div class="snum">11</div><div class="sbody"><div class="ins">Verify the extracted files look correct:</div><div class="cmd">ls -lh /tmp/restore_test/config/</div></div></div><div class="step"><div class="snum">12</div><div class="sbody"><div class="ins">Confirm backup integrity using saved checksum:</div><div class="cmd">md5sum -c backup/checksum.md5</div></div></div></div>
+        <div class="uninote"><strong>DATE NOTE:</strong> Steps 6–12 use <code>config_$(date +%Y%m%d).tar.gz</code>. Shell replaces <code>$(date +%Y%m%d)</code> with today's date. e.g. June 15 2026 → config_20260615.tar.gz</div>
+      </div>
     </div>
   </div>
-  <div class="lfoot"><span>AMHS Linux Lab Workbook&nbsp; •&nbsp; Ubuntu VM Practice</span><span>29</span></div>
+  <div class="lfoot"><span></span><span>30</span></div>
 </section>
 
-<!-- 30 LAB 9 ANSWER -->
-<section class="slide" data-title="Lab 9: Answer Key">
-  <div class="lhead"><div class="ltitle">Lab 9: Answer Key — Backup Output</div><div class="badge green">ANSWER KEY</div></div>
+<section class="slide ans-slide" data-title="Lab 9: Answer Key">
+<div class="lhead"><div class="ltitle">Lab 9: Answer Key — Backup Output</div><div class="badge green">ANSWER KEY</div></div>
   <div class="dash"></div>
   <div class="lbody">
-    <div class="ans2">
+    <div class="ans2 ansfull">
       <div class="term green"><div class="lbl">Expected Output:</div><pre><span class="pr">$ tar -cvf backup/config_backup.tar config/</span>
 config/
 config/amhs.conf
+(tar lists each file as it adds — the -v verbose flag)
 <span class="pr">$ tar -tvf backup/config_backup.tar</span>
-drwxrwxr-x student/student 0  Jan 15 config/
--rw-rw-r-- student/student 47 Jan 15 config/amhs.conf
+drwxrwxr-x student/student   0 Jan 15 config/
+-rw-rw-r-- student/student  93 Jan 15 config/amhs.conf
 <span class="pr">$ gzip backup/config_backup.tar</span>
-(creates config_backup.tar.gz, deletes .tar)
-<span class="pr">$ ls -lh backup/</span>
--rw-rw-r-- 1 student 175 Jan 15 config_backup.tar.gz
--rw-rw-r-- 1 student 175 Jan 15 config_20240115.tar.gz
--rw-rw-r-- 1 student  55 Jan 15 checksum.md5</pre></div>
-      <div class="term green"><div class="lbl">Expected Output:</div><pre><span class="pr">$ md5sum backup/config_20240115.tar.gz</span>
-a3f4b2c1d8e9f0a1b2c3d4e5  config_20240115.tar.gz
-<span class="pr">$ md5sum -c backup/checksum.md5</span>
-config_20240115.tar.gz: OK
-<span class="cmt">'OK' = file matches checksum. File is intact.
-'FAILED' = file is corrupted or changed.</span>
-Restore test result:
+(no output — creates .tar.gz, removes .tar)
+<span class="pr">$ ls -lh backup/config_backup.tar.gz</span>
+-rw-rw-r-- 1 student 220 Jan 15 config_backup.tar.gz
+<span class="pr">$ tar -czvf backup/config_20260615.tar.gz config/</span>
+config/
+config/amhs.conf
+NOTE: Your filename will contain today's actual
+date. $(date +%Y%m%d) is replaced automatically.</pre></div>
+      <div class="term green"><div class="lbl">Expected Output:</div><pre><span class="pr">$ ls -lh backup/</span>
+-rw-rw-r-- 1 student 265K sample_data.b64
+-rw-rw-r-- 1 student  220 config_backup.tar.gz
+-rw-rw-r-- 1 student  220 config_20260615.tar.gz
+  (your file will show today's date, not 20260615)
+<span class="pr">$ md5sum backup/config_20260615.tar.gz</span>
+a3f4b2c1d8e9f0a1b2c3d4  config_20260615.tar.gz
+(your hash will differ — each file is unique)
+<span class="pr">$ tar -xzvf config_20260615.tar.gz -C /tmp/restore_test/</span>
+config/
+config/amhs.conf
+(tar lists files as it extracts — same -v output)
 <span class="pr">$ ls -lh /tmp/restore_test/config/</span>
--rw-rw-r-- 1 student 47 Jan 15 amhs.conf
-<span class="cmt">Complete backup workflow:
-1. Backup → 2. md5sum → 3. Restore test → 4. Store
-Skip any step = your backup might fail when needed!</span></pre></div>
+-rw-rw-r-- 1 student 93 Jan 15 amhs.conf
+<span class="pr">$ md5sum -c backup/checksum.md5</span>
+backup/config_20260615.tar.gz: OK
+'OK' = matches checksum, backup intact.
+'FAILED' = corrupted, backup unusable.</pre></div>
     </div>
   </div>
-  <div class="lfoot"><span>AMHS Linux Lab Workbook&nbsp; •&nbsp; Ubuntu VM Practice</span><span>30</span></div>
+  <div class="lfoot"><span></span><span>31</span></div>
 </section>
 
-<!-- 31 QUICK REFERENCE -->
 <section class="slide" data-title="Quick Reference: All Commands">
-  <div class="lhead"><div class="ltitle">Quick Reference: All Commands at a Glance</div><div class="lsub">Keep this slide handy while practicing</div></div>
+<div class="lhead"><div class="ltitle">Quick Reference: All Commands at a Glance</div><div class="lsub">Keep this slide handy while practicing</div></div>
   <div class="dash"></div>
   <div class="lbody">
     <div class="qref">
       <div class="qcard"><h4>System Info</h4><code>uname -a</code><code>lsb_release -a</code><code>hostname</code><code>uptime</code><code>date</code><code>who</code><code>id</code></div>
       <div class="qcard gray"><h4>Files &amp; Navigation</h4><code>pwd</code><code>ls -lh / ls -lt</code><code>cd &lt;dir&gt;</code><code>mkdir &lt;dir&gt;</code><code>cp src dest</code><code>mv src dest</code><code>rm file</code></div>
-      <div class="qcard green"><h4>Reading Logs</h4><code>cat file</code><code>less file</code><code>head -n file</code><code>tail -n file</code><code>grep PAT file</code><code>grep -i -c -B -A</code><code>tail -f file</code></div>
-      <div class="qcard amber"><h4>Processes</h4><code>ps -ef</code><code>ps -ef | grep X</code><code>top</code><code>top -bn1</code><code>kill &lt;PID&gt;</code><code>ps -u $USER</code><code>wc -l</code></div>
+      <div class="qcard green"><h4>Reading Logs</h4><code>cat file</code><code>less file</code><code>head -5 file</code><code>tail -5 file</code><code>grep PAT file</code><code>grep -c PAT file</code><code>grep -B1 -A1 PAT</code></div>
+      <div class="qcard amber"><h4>Processes</h4><code>ps -ef</code><code>ps -ef | grep X</code><code>ps -u $USER</code><code>top</code><code>top -bn1</code><code>ps -ef | wc -l</code></div>
       <div class="qcard"><h4>Services (Ubuntu)</h4><code>systemctl status X</code><code>systemctl start X</code><code>systemctl stop X</code><code>systemctl restart X</code><code>systemctl enable X</code><code>systemctl list-units</code><code class="dim">(RHEL: service X cmd)</code></div>
-      <div class="qcard gray"><h4>Network</h4><code>ip addr show</code><code>hostname -I</code><code>ping -c 4 &lt;ip&gt;</code><code>ip route show</code><code>ss -tlnp</code><code>netstat -tlnp</code><code>telnet &lt;ip&gt; &lt;port&gt;</code></div>
-      <div class="qcard green"><h4>Disk &amp; Memory</h4><code>df -h</code><code>du -sh &lt;dir&gt;</code><code>free -m</code><code>vmstat 1 5</code><code>find ~ -size +100k</code><code>sort -rh</code></div>
+      <div class="qcard gray"><h4>Network</h4><code>ip addr show</code><code>hostname -I</code><code>ping -c 4 &lt;ip&gt;</code><code>ip route show</code><code>ss -tlnp</code><code>telnet &lt;ip&gt; &lt;port&gt;</code></div>
+      <div class="qcard green"><h4>Disk &amp; Memory</h4><code>df -h</code><code>du -sh ~</code><code>du -sh ~/* | sort</code><code>free -m</code><code>vmstat 1 5</code><code>find ~ -size +100k</code></div>
       <div class="qcard amber"><h4>Backup</h4><code>tar -cvf arc.tar dir/</code><code>tar -czvf arc.tar.gz dir/</code><code>tar -tvf arc.tar</code><code>tar -xzvf arc.tar.gz</code><code>gzip file.tar</code><code>md5sum file</code><code>md5sum -c file.md5</code></div>
     </div>
   </div>
-  <div class="lfoot"><span>AMHS Linux Lab Workbook&nbsp; •&nbsp; Ubuntu VM Practice</span><span>31</span></div>
+  <div class="lfoot"><span></span><span>32</span></div>
 </section>
 
-<!-- 32 COMPLETE -->
-<section class="slide complete" data-title="Lab Complete — Well Done!">
+<section class="slide complete" data-title="All 9 Labs Complete!">
   <div class="td"></div>
   <div class="eyebrow">LAB COMPLETE</div>
-  <h1>Well Done!</h1>
+  <h1>All 9 Labs Complete!</h1>
+  <div class="cintro">You have practiced the essential Linux commands for AMHS operations.</div>
   <div class="cul"></div>
   <div class="cols">
-    <div class="ci"><span class="ck">✓</span><span>Check system status with uname, hostname, uptime</span></div>
-    <div class="ci"><span class="ck">✓</span><span>Diagnose network issues with ping, ip, ss, and telnet</span></div>
-    <div class="ci"><span class="ck">✓</span><span>Navigate the Linux filesystem with confidence</span></div>
-    <div class="ci"><span class="ck">✓</span><span>Monitor disk and memory with df, free, and vmstat</span></div>
-    <div class="ci"><span class="ck">✓</span><span>Read and search log files using cat, less, tail, and grep</span></div>
-    <div class="ci"><span class="ck">✓</span><span>Set file permissions with chmod</span></div>
-    <div class="ci"><span class="ck">✓</span><span>Monitor processes with ps and top</span></div>
-    <div class="ci"><span class="ck">✓</span><span>Create and verify backups with tar and md5sum</span></div>
-    <div class="ci"><span class="ck">✓</span><span>Start and stop services (Ubuntu: systemctl / RHEL: service)</span></div>
+    <div class="ci"><span class="ck">✓</span><span><b>System Info</b> — uname, lsb_release, hostname, uptime, who, id</span></div>
+    <div class="ci"><span class="ck">✓</span><span><b>File Navigation</b> — pwd, ls, cd, mkdir, cp, mv, rm</span></div>
+    <div class="ci"><span class="ck">✓</span><span><b>Log Reading</b> — cat, less, head, tail, grep</span></div>
+    <div class="ci"><span class="ck">✓</span><span><b>Process Monitor</b> — ps, top, wc</span></div>
+    <div class="ci"><span class="ck">✓</span><span><b>Services</b> — systemctl (Ubuntu) / service, chkconfig (RHEL)</span></div>
+    <div class="ci"><span class="ck">✓</span><span><b>Network</b> — ip addr, ping, ip route, ss, telnet</span></div>
+    <div class="ci"><span class="ck">✓</span><span><b>Disk &amp; Memory</b> — df, du, free, vmstat, find</span></div>
+    <div class="ci"><span class="ck">✓</span><span><b>Permissions</b> — ls -l, chmod, chown, id, sudo</span></div>
+    <div class="ci"><span class="ck">✓</span><span><b>Backup</b> — tar, gzip, md5sum, restore verify</span></div>
   </div>
-  <div class="foot">You are ready to monitor and support the AMHS server!</div>
+  <div class="foot">Keep practicing on your Ubuntu VM. The more you type these commands, the faster you will recall them when you need them on the real AMHS server.</div>
   <div class="bd"></div>
-
   </section>
+
 
 
 </div></div>
@@ -930,7 +1101,7 @@ Skip any step = your backup might fail when needed!</span></pre></div>
   <a class="btn wide idxlink" href="index.html" title="Back to Home">⌂ Home</a>
   <button class="btn" id="first" title="First slide (Home)">⤒</button>
   <button class="btn" id="prev" title="Previous (←)">‹</button>
-  <span id="count">1 / 32</span>
+  <span id="count">1 / 33</span>
   <button class="btn" id="next" title="Next (→)">›</button>
   <button class="btn wide" id="grid" title="Overview (G)">▦ Grid</button>
   <button class="btn" id="fs" title="Fullscreen (F)">⛶</button>
